@@ -1,0 +1,2334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FS.SELLS — Designer Denim</title>
+<meta name="description" content="FS.SELLS — curated designer jeans. Authenticated. Limited runs. Worldwide delivery.">
+<meta name="theme-color" content="#ebe5d8">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gloock&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   1. DESIGN TOKENS
+   Unbleached cotton paper, indigo ink, selvedge-red accent.
+   ============================================================ */
+:root{
+  --paper:#ebe5d8;
+  --paper-2:#e3dccd;
+  --surface:#f5f1e8;
+  --ink:#1a2033;
+  --indigo:#2a3a5e;
+  --muted:#6d6758;
+  --line:#cdc4b1;
+  --line-dark:rgba(26,32,51,.22);
+  --rust:#a4472d;
+
+  --serif:'Gloock',Georgia,'Times New Roman',serif;
+  --sans:'Archivo','Helvetica Neue',Helvetica,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+
+  --radius:2px;
+  --shadow:0 30px 80px rgba(26,32,51,.22);
+  --header-h:68px;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:var(--sans);
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+/* Fine paper grain, fixed so it never repaints on scroll */
+body::before{
+  content:'';position:fixed;inset:0;z-index:100;pointer-events:none;opacity:.32;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .1 0 0 0 0 .12 0 0 0 0 .2 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+::selection{background:var(--indigo);color:var(--surface)}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+input,select,textarea{font:inherit}
+svg{display:block}
+:focus-visible{outline:2px solid var(--rust);outline-offset:3px}
+.wrap{width:min(1320px,100% - 56px);margin-inline:auto}
+.hidden{display:none !important}
+section{scroll-margin-top:calc(var(--header-h) + 20px)}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+
+/* Selvedge edge: the red-and-white ID line found on selvedge denim */
+.selvedge{
+  height:7px;
+  background:
+    linear-gradient(var(--rust),var(--rust)) center/100% 2px no-repeat,
+    var(--surface);
+  border-block:1px solid var(--line);
+}
+
+/* ============================================================
+   2. ANNOUNCEMENT BAR
+   ============================================================ */
+.bar{
+  background:var(--ink);color:rgba(245,241,232,.82);
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  padding:9px 0;
+}
+.bar .wrap{display:flex;justify-content:space-between;gap:20px}
+.bar .wrap span:last-child{color:rgba(245,241,232,.5)}
+
+/* ============================================================
+   3. HEADER
+   ============================================================ */
+.header{
+  position:sticky;top:0;z-index:60;
+  background:rgba(235,229,216,.9);
+  -webkit-backdrop-filter:blur(12px);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid transparent;
+  transition:border-color .3s;
+}
+.header.scrolled{border-color:var(--line)}
+.header__inner{
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+  height:var(--header-h);gap:20px;
+}
+.logo{
+  font-family:var(--serif);font-size:25px;letter-spacing:-.01em;line-height:1;
+  white-space:nowrap;justify-self:center;
+}
+.logo span{color:var(--rust)}
+.nav{display:flex;gap:28px;font-size:13px;font-weight:500}
+.nav a{position:relative;padding:4px 0}
+.nav a::after{
+  content:'';position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--ink);
+  transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease);
+}
+.nav a:hover::after{transform:scaleX(1)}
+.header__actions{display:flex;align-items:center;gap:6px;justify-self:end}
+
+.icon-btn{
+  width:38px;height:38px;
+  display:grid;place-items:center;
+  color:var(--muted);transition:color .2s,background .2s;
+}
+.icon-btn:hover{color:var(--ink);background:rgba(26,32,51,.06)}
+.icon-btn svg{width:18px;height:18px}
+
+.cart-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:9px 4px 9px 14px;
+  font-size:13px;font-weight:600;
+  border-left:1px solid var(--line);
+}
+.cart-btn .count{
+  font-family:var(--mono);font-size:11px;font-weight:500;
+  min-width:24px;height:24px;padding:0 6px;
+  display:grid;place-items:center;
+  border:1px solid var(--ink);border-radius:50%;
+  transition:background .2s,color .2s;
+}
+.cart-btn:hover .count{background:var(--ink);color:var(--surface)}
+.menu-btn{display:none;width:38px;height:38px;place-items:center}
+.menu-btn svg{width:20px;height:20px}
+
+/* Mobile nav panel */
+.mobile-nav{
+  display:none;flex-direction:column;
+  border-top:1px solid var(--line);
+  background:var(--paper);padding:4px 28px 20px;
+}
+.mobile-nav.open{display:flex}
+.mobile-nav a{padding:16px 0;border-bottom:1px solid var(--line);font-family:var(--serif);font-size:22px}
+
+/* ============================================================
+   4. HERO
+   ============================================================ */
+.hero{padding:clamp(36px,5vw,64px) 0 clamp(48px,7vw,96px)}
+.hero__grid{
+  display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);
+  gap:clamp(28px,5vw,80px);align-items:end;
+}
+.hero__meta{
+  display:flex;gap:28px;flex-wrap:wrap;
+  padding-bottom:18px;margin-bottom:clamp(28px,4vw,48px);
+  border-bottom:1px solid var(--line-dark);color:var(--muted);
+}
+.hero__meta b{color:var(--ink);font-weight:500}
+.hero h1{
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(54px,10.4vw,168px);
+  line-height:.88;letter-spacing:-.035em;
+  margin:0 0 clamp(26px,3vw,40px);
+}
+.hero h1 .ln{display:block;overflow:hidden;padding-bottom:.04em}
+.hero h1 .ln > span{display:inline-block;animation:rise 1s var(--ease) both}
+.hero h1 .ln:nth-child(2) > span{animation-delay:.08s}
+.hero h1 .ln:nth-child(3) > span{animation-delay:.16s}
+.hero h1 .indent{padding-left:clamp(0px,9vw,150px)}
+.hero h1 i{font-style:normal;color:var(--rust)}
+@keyframes rise{from{transform:translateY(105%)}to{transform:none}}
+
+.hero__foot{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:28px;align-items:end}
+.lede{max-width:42ch;color:var(--muted);font-size:clamp(15px,1.4vw,17px);margin:0}
+.hero__cta{display:flex;gap:10px;flex-wrap:wrap}
+
+.hero__visual{position:relative;animation:fade 1.2s .25s var(--ease) both}
+.hero__visual img{width:100%;aspect-ratio:4/5;object-fit:cover;background:var(--indigo)}
+.hero__tag{
+  position:absolute;left:-28px;bottom:36px;
+  background:var(--surface);border:1px solid var(--line);
+  padding:16px 18px 14px;min-width:200px;
+  box-shadow:0 14px 34px rgba(26,32,51,.16);
+  transform:rotate(-2deg);
+}
+.hero__tag::before{
+  content:'';position:absolute;top:12px;right:12px;width:9px;height:9px;
+  border-radius:50%;border:1px solid var(--line);background:var(--paper);
+}
+.hero__tag .mono{color:var(--muted);display:block}
+.hero__tag strong{display:block;font-family:var(--serif);font-weight:400;font-size:24px;line-height:1.1;margin:6px 0 10px}
+.hero__tag dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 16px;padding-top:10px;border-top:1px dashed var(--line)}
+.hero__tag dt,.hero__tag dd{margin:0;font-family:var(--mono);font-size:11px;letter-spacing:.04em}
+.hero__tag dt{color:var(--muted)}
+.hero__tag dd{text-align:right}
+@keyframes fade{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+/* ============================================================
+   5. BUTTONS
+   ============================================================ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:15px 26px;border-radius:var(--radius);
+  font-size:13px;font-weight:600;letter-spacing:.02em;
+  border:1px solid var(--ink);transition:background .2s,color .2s,border-color .2s;white-space:nowrap;
+}
+.btn svg{width:14px;height:14px;transition:transform .25s var(--ease)}
+.btn:hover svg{transform:translateX(3px)}
+.btn--dark{background:var(--ink);color:var(--surface)}
+.btn--dark:hover{background:var(--indigo);border-color:var(--indigo)}
+.btn--dark:active{transform:translateY(1px)}
+.btn--ghost{background:transparent}
+.btn--ghost:hover{background:var(--ink);color:var(--surface)}
+.btn--full{width:100%}
+.btn--sm{padding:11px 16px;font-size:12px}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none !important}
+
+/* ============================================================
+   6. MARQUEE
+   ============================================================ */
+.marquee{
+  background:var(--ink);color:var(--surface);
+  overflow:hidden;padding:16px 0;
+}
+.marquee__track{
+  display:flex;white-space:nowrap;width:max-content;
+  animation:slide 40s linear infinite;
+  font-family:var(--serif);font-size:clamp(20px,2.2vw,28px);
+}
+.marquee__track span{display:inline-flex;align-items:center}
+.marquee__track span::after{
+  content:'';width:40px;height:1px;background:var(--rust);margin:0 32px;
+}
+@keyframes slide{to{transform:translateX(-50%)}}
+.marquee:hover .marquee__track{animation-play-state:paused}
+
+/* ============================================================
+   7. SECTIONS
+   ============================================================ */
+.section{padding:clamp(64px,9vw,128px) 0}
+.section__head{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;
+  gap:24px 40px;margin-bottom:clamp(28px,4vw,48px);
+}
+.section__label{color:var(--rust);margin:0 0 14px}
+.section__head h2{
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(40px,6vw,84px);letter-spacing:-.03em;
+  margin:0;line-height:.95;
+}
+.section__head p{margin:14px 0 0;color:var(--muted)}
+
+/* Filters */
+.filters{display:flex;gap:2px 20px;flex-wrap:wrap;justify-content:flex-end}
+.chip{
+  position:relative;padding:6px 0;
+  font-size:13px;font-weight:500;color:var(--muted);transition:color .2s;
+}
+.chip::after{
+  content:'';position:absolute;left:0;right:0;bottom:2px;height:1px;background:currentColor;
+  transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease);
+}
+.chip:hover{color:var(--ink)}
+.chip.active{color:var(--ink)}
+.chip.active::after{transform:scaleX(1);background:var(--rust);height:2px}
+
+/* ============================================================
+   8. PRODUCT GRID — catalogue sheet with hairline rules
+   ============================================================ */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
+  border-top:1px solid var(--line-dark);
+  border-left:1px solid var(--line);
+}
+.card{
+  cursor:pointer;padding:18px 18px 22px;
+  border-right:1px solid var(--line);border-bottom:1px solid var(--line);
+  transition:background .3s;
+  animation:fade .7s var(--ease) both;
+}
+.card:nth-child(2){animation-delay:.05s}
+.card:nth-child(3){animation-delay:.1s}
+.card:nth-child(4){animation-delay:.15s}
+.card:nth-child(n+5){animation-delay:.2s}
+.card:hover{background:var(--surface)}
+.card__top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;color:var(--muted)}
+.card__media{
+  position:relative;overflow:hidden;
+  background:var(--indigo);aspect-ratio:4/5;
+}
+.card__media img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform 1s var(--ease);
+}
+.card:hover .card__media img{transform:scale(1.045)}
+.badge{color:var(--rust);font-weight:500}
+.card__quick{
+  position:absolute;left:0;right:0;bottom:0;
+  padding:14px 16px;
+  background:var(--surface);color:var(--ink);
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:12px;font-weight:600;letter-spacing:.02em;
+  transform:translateY(100%);
+  transition:transform .35s var(--ease),background .2s,color .2s;
+}
+.card__quick svg{width:14px;height:14px}
+.card:hover .card__quick,.card__quick:focus-visible{transform:none}
+.card__quick:hover{background:var(--ink);color:var(--surface)}
+.card__body{padding:16px 0 0}
+.card__row{display:flex;justify-content:space-between;align-items:baseline;gap:14px}
+.card__row h3{font-family:var(--serif);font-weight:400;font-size:21px;line-height:1.15;margin:0;letter-spacing:-.01em}
+.price{font-family:var(--mono);font-size:13px;white-space:nowrap}
+.card__cat{color:var(--muted);margin:6px 0 0}
+.empty-note{grid-column:1/-1;text-align:center;color:var(--muted);padding:80px 20px;margin:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+
+/* ============================================================
+   9. ABOUT
+   ============================================================ */
+.about{background:var(--surface);border-top:1px solid var(--line)}
+.about__grid{
+  display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
+  gap:clamp(32px,6vw,110px);align-items:start;
+}
+.about__media{position:relative}
+.about__media img{width:100%;aspect-ratio:4/5;object-fit:cover;background:var(--indigo)}
+.about__media figcaption{margin-top:12px;color:var(--muted);display:flex;justify-content:space-between}
+.about__text{padding-top:clamp(0px,4vw,60px)}
+.about h2{
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(38px,5.4vw,74px);letter-spacing:-.03em;margin:0 0 32px;line-height:.98;
+}
+.about h2 i{font-style:normal;color:var(--rust)}
+.about__cols{display:grid;grid-template-columns:1fr 1fr;gap:24px 36px}
+.about__cols p{color:var(--muted);margin:0;font-size:15.5px}
+.about__cols p:first-child::first-letter{
+  font-family:var(--serif);float:left;font-size:58px;line-height:.85;
+  margin:6px 10px 0 0;color:var(--ink);
+}
+.stats{margin:48px 0 0;padding:0;list-style:none;border-top:1px solid var(--line-dark)}
+.stat{
+  display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:20px;align-items:baseline;
+  padding:16px 0;border-bottom:1px solid var(--line);
+}
+.stat .mono{color:var(--muted)}
+.stat strong{font-family:var(--serif);font-weight:400;font-size:24px;letter-spacing:-.01em}
+.stat span:last-child{color:var(--muted);font-size:14px;text-align:right}
+
+/* ============================================================
+   10. FOOTER
+   ============================================================ */
+.footer{background:var(--ink);color:var(--surface);padding:clamp(56px,7vw,96px) 0 28px}
+.footer .footer__big{
+  max-width:none;
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(56px,13vw,200px);line-height:.85;letter-spacing:-.04em;
+  margin:0 0 clamp(40px,5vw,72px);color:var(--surface);
+}
+.footer__big span{color:var(--rust)}
+.footer__grid{
+  display:grid;grid-template-columns:1.6fr 1fr 1fr;
+  gap:40px;padding:32px 0 44px;border-top:1px solid rgba(245,241,232,.18);
+}
+.footer h4{
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(245,241,232,.45);margin:0 0 16px;font-weight:400;
+}
+.footer a{display:block;color:rgba(245,241,232,.82);padding:5px 0;font-size:14px;transition:color .2s}
+.footer a:hover{color:var(--surface)}
+.footer p{color:rgba(245,241,232,.6);font-size:14px;max-width:36ch;margin:0}
+.footer__bottom{
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  padding-top:24px;border-top:1px solid rgba(245,241,232,.12);
+  font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:rgba(245,241,232,.42);
+}
+
+/* ============================================================
+   11. OVERLAY / DRAWER / MODALS
+   ============================================================ */
+.overlay{
+  position:fixed;inset:0;z-index:80;
+  background:rgba(26,32,51,.5);
+  opacity:0;pointer-events:none;transition:opacity .32s;
+}
+.overlay.open{opacity:1;pointer-events:auto}
+
+.drawer{
+  position:fixed;top:0;right:0;height:100%;width:min(440px,100%);
+  background:var(--surface);z-index:90;
+  display:flex;flex-direction:column;
+  transform:translateX(101%);
+  transition:transform .45s var(--ease);
+  border-left:1px solid var(--line);
+}
+.drawer.open{transform:none}
+.drawer__head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 24px;border-bottom:1px solid var(--line);
+}
+.drawer__head h3{margin:0;font-family:var(--serif);font-weight:400;font-size:26px;letter-spacing:-.01em}
+.drawer__head h3 .mono{color:var(--muted);vertical-align:middle;margin-left:6px}
+.drawer__body{flex:1;overflow-y:auto;padding:8px 24px 20px}
+.drawer__foot{padding:22px 24px;border-top:1px solid var(--line);background:var(--paper)}
+
+.close-x{
+  width:36px;height:36px;
+  display:grid;place-items:center;color:var(--muted);
+  transition:color .2s,transform .3s var(--ease);
+}
+.close-x svg{width:16px;height:16px}
+.close-x:hover{color:var(--ink);transform:rotate(90deg)}
+
+/* Cart lines */
+.line{display:flex;gap:16px;padding:18px 0;border-bottom:1px solid var(--line)}
+.line img{width:80px;height:100px;object-fit:cover;flex:none;background:var(--indigo)}
+.line__info{flex:1;min-width:0;display:flex;flex-direction:column}
+.line__info h4{margin:0 0 4px;font-family:var(--serif);font-weight:400;font-size:18px;line-height:1.2}
+.line__info .cat{font-family:var(--mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:0 0 12px}
+.line__bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--line)}
+.qty button{width:30px;height:30px;display:grid;place-items:center;color:var(--muted);font-size:15px;transition:background .2s,color .2s}
+.qty button:hover{background:var(--paper);color:var(--ink)}
+.qty span{min-width:28px;text-align:center;font-family:var(--mono);font-size:12px}
+.line__price{font-family:var(--mono);font-size:13px}
+.remove{align-self:flex-start;font-size:12px;color:var(--muted);border-bottom:1px solid currentColor;margin-top:10px;padding:0}
+.remove:hover{color:var(--rust)}
+
+.totals{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+.totals__row{display:flex;justify-content:space-between;font-size:14px;color:var(--muted)}
+.totals__row span:last-child{font-family:var(--mono);font-size:13px;color:var(--ink)}
+.totals__row.grand{
+  color:var(--ink);font-weight:600;
+  padding-top:12px;border-top:1px solid var(--line-dark);margin-top:4px;
+}
+.totals__row.grand span:last-child{font-size:15px;font-weight:500}
+.ship-note{margin-bottom:16px;font-size:12px;color:var(--muted)}
+.ship-note .meter{height:2px;background:var(--line);margin-top:8px;overflow:hidden}
+.ship-note .meter i{display:block;height:100%;background:var(--rust);transform-origin:left;transition:transform .5s var(--ease)}
+.empty-cart{text-align:center;padding:72px 10px;color:var(--muted)}
+.empty-cart .big{width:56px;height:56px;margin:0 auto 20px;color:var(--line-dark)}
+.empty-cart h4{font-family:var(--serif);font-weight:400;font-size:26px;color:var(--ink);margin:0 0 6px}
+
+/* Modal */
+.modal{
+  position:fixed;inset:0;z-index:95;
+  display:grid;place-items:center;padding:18px;
+  opacity:0;pointer-events:none;transition:opacity .26s;
+  overflow-y:auto;
+}
+.modal.open{opacity:1;pointer-events:auto}
+.modal__panel{
+  background:var(--surface);border-radius:var(--radius);
+  width:min(980px,100%);max-height:92vh;overflow-y:auto;
+  box-shadow:var(--shadow);
+  transform:translateY(18px);
+  transition:transform .4s var(--ease);
+  position:relative;
+}
+.modal.open .modal__panel{transform:none}
+.modal__close{
+  position:absolute;top:12px;right:12px;z-index:5;
+  width:38px;height:38px;
+  background:var(--surface);border:1px solid var(--line);
+  display:grid;place-items:center;color:var(--ink);
+  transition:background .2s,color .2s;
+}
+.modal__close svg{width:15px;height:15px}
+.modal__close:hover{background:var(--ink);color:var(--surface)}
+
+/* Product quick view */
+.pv{display:grid;grid-template-columns:1.05fr 1fr}
+.pv__media{background:var(--indigo);overflow:hidden;min-height:440px}
+.pv__media img{width:100%;height:100%;object-fit:cover}
+.pv__info{padding:clamp(28px,4vw,52px);display:flex;flex-direction:column;justify-content:center}
+.pv__info .cat{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--rust);margin:0 0 14px}
+.pv__info h2{font-family:var(--serif);font-weight:400;font-size:clamp(32px,4vw,48px);letter-spacing:-.025em;margin:0 0 12px;line-height:1}
+.pv__price{font-family:var(--mono);font-size:17px;margin:0 0 22px}
+.pv__desc{color:var(--muted);font-size:15px;margin:0 0 28px;max-width:44ch}
+.pv__meta{display:flex;flex-direction:column;margin:28px 0 0;border-top:1px solid var(--line-dark)}
+.pv__meta div{font-size:13px;color:var(--muted);padding:11px 0;border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:baseline}
+.pv__meta div::before{font-family:var(--mono);font-size:11px;color:var(--ink);counter-increment:pv;content:'0' counter(pv)}
+.pv__meta{counter-reset:pv}
+
+/* ============================================================
+   12. FORMS / CHECKOUT
+   ============================================================ */
+.field{display:flex;flex-direction:column;gap:7px;margin-bottom:16px}
+.field label{
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);
+}
+.field input,.field select,.field textarea{
+  padding:13px 14px;border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--paper);font-size:14px;width:100%;transition:border-color .2s,background .2s;
+  color:var(--ink);
+}
+.field input::placeholder{color:#9d968a}
+.field input:focus,.field select:focus,.field textarea:focus{
+  outline:none;border-color:var(--ink);background:var(--surface);
+}
+.field input:user-invalid{border-color:var(--rust)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+.checkout{display:grid;grid-template-columns:1.25fr 1fr}
+.checkout__form{padding:clamp(24px,3.6vw,48px)}
+.checkout__form h2{font-family:var(--serif);font-weight:400;font-size:38px;letter-spacing:-.02em;margin:0 0 6px;line-height:1}
+.checkout__form .sub{color:var(--muted);font-size:14px;margin:0 0 30px}
+.checkout__side{
+  background:var(--paper);padding:clamp(24px,3.6vw,48px);
+  border-left:1px solid var(--line);
+}
+.checkout__side h3{
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);margin:0 0 16px;font-weight:400;
+  padding-bottom:12px;border-bottom:1px solid var(--line-dark);
+}
+.summary-line{
+  display:flex;justify-content:space-between;gap:12px;
+  font-size:14px;padding:9px 0;border-bottom:1px dashed var(--line);
+}
+.summary-line span:last-child{font-family:var(--mono);font-size:13px}
+.summary-line em{font-style:normal;color:var(--muted);font-family:var(--mono);font-size:11px;margin-left:4px}
+.pay-note{font-size:12px;color:var(--muted);text-align:center;margin-top:14px;line-height:1.5}
+.secure{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em;
+  text-transform:uppercase;margin-top:16px;
+}
+.secure svg{width:12px;height:12px}
+.alt-pay{text-align:center;margin-top:12px;font-size:13px;color:var(--muted)}
+.alt-pay button{color:var(--ink);font-weight:600;border-bottom:1px solid var(--rust);padding:0}
+
+/* Confirmation */
+.confirm{text-align:center;padding:clamp(44px,6vw,76px) clamp(24px,4vw,50px)}
+.confirm__tick{
+  width:64px;height:64px;border-radius:50%;margin:0 auto 26px;
+  border:1px solid var(--ink);color:var(--ink);
+  display:grid;place-items:center;
+}
+.confirm__tick svg{width:26px;height:26px}
+.confirm h2{font-family:var(--serif);font-weight:400;font-size:clamp(34px,4.6vw,52px);letter-spacing:-.025em;margin:0 0 14px;line-height:1}
+.confirm p{color:var(--muted);max-width:44ch;margin:0 auto 12px;font-size:15px}
+.confirm .ordernum{
+  display:inline-block;margin:16px 0 26px;padding:9px 16px;
+  border:1px dashed var(--line-dark);
+  font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+}
+.demo-flag{
+  background:transparent;border:1px solid var(--line);border-left:2px solid var(--rust);
+  color:var(--muted);
+  padding:13px 16px;font-size:13px;
+  max-width:52ch;margin:22px auto 26px;text-align:left;line-height:1.55;
+}
+.demo-flag strong{color:var(--ink)}
+
+/* ============================================================
+   13. ADMIN PANEL
+   ============================================================ */
+.admin__head{
+  padding:24px 30px;border-bottom:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;gap:16px;
+  position:sticky;top:0;background:var(--surface);z-index:4;
+}
+.admin__head h2{margin:0;font-family:var(--serif);font-weight:400;font-size:30px;letter-spacing:-.02em;line-height:1}
+.admin__head p{margin:6px 0 0;font-size:13px;color:var(--muted)}
+.admin__body{padding:10px 30px 22px}
+.admin__row{
+  display:grid;grid-template-columns:88px 1fr auto;
+  gap:20px;padding:22px 0;border-bottom:1px solid var(--line);
+}
+.admin__row img{width:88px;height:110px;object-fit:cover;background:var(--indigo)}
+.admin__fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.admin__fields .full{grid-column:1/-1}
+.admin__fields label{
+  display:flex;flex-direction:column;gap:5px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);
+}
+.admin__fields input{
+  padding:9px 11px;border:1px solid var(--line);border-radius:var(--radius);
+  font-family:var(--sans);font-size:13px;letter-spacing:0;text-transform:none;
+  background:var(--paper);width:100%;color:var(--ink);
+}
+.admin__fields input:focus{outline:none;border-color:var(--ink);background:var(--surface)}
+.admin__del{
+  align-self:start;font-size:12px;color:var(--rust);
+  border-bottom:1px solid currentColor;padding:0;
+}
+.admin__foot{
+  padding:20px 30px;border-top:1px solid var(--line);
+  display:flex;gap:12px;flex-wrap:wrap;justify-content:space-between;
+  position:sticky;bottom:0;background:var(--surface);
+}
+.admin__foot .left{display:flex;gap:10px;flex-wrap:wrap}
+.export-box{
+  width:100%;height:220px;padding:14px;border:1px solid var(--line);
+  font-family:var(--mono);font-size:12px;background:var(--paper);resize:vertical;margin-top:16px;
+}
+.upload-btn{
+  display:inline-flex !important;flex-direction:row !important;align-items:center;gap:8px !important;
+  color:var(--ink) !important;cursor:pointer;margin-top:4px;justify-self:start;
+}
+.upload-btn svg{width:13px;height:13px}
+.upload-btn:hover{color:var(--rust) !important}
+.upload-btn input{display:none}
+
+/* ============================================================
+   14. RESPONSIVE
+   ============================================================ */
+@media (max-width:980px){
+  .hero__grid{grid-template-columns:1fr}
+  .hero__visual{max-width:520px;margin-left:auto;width:88%}
+  .about__grid{grid-template-columns:1fr}
+  .about__media{max-width:560px}
+}
+@media (max-width:900px){
+  .nav{display:none}
+  .menu-btn{display:grid}
+  .header__inner{grid-template-columns:auto 1fr auto}
+  .logo{justify-self:start;grid-column:2}
+  .menu-btn{grid-column:1;grid-row:1}
+  .header__actions{grid-column:3}
+  .footer__grid{grid-template-columns:1fr 1fr}
+  .footer__grid > div:first-child{grid-column:1/-1}
+  .pv{grid-template-columns:1fr}
+  .pv__media{min-height:320px;max-height:50vh}
+  .checkout{grid-template-columns:1fr}
+  .checkout__side{border-left:0;border-top:1px solid var(--line)}
+  .admin__row{grid-template-columns:70px 1fr}
+  .admin__row img{width:70px;height:88px}
+  .admin__del{grid-column:1/-1;justify-self:start}
+  .admin__fields{grid-template-columns:1fr}
+  .section__head{grid-template-columns:1fr}
+  .filters{justify-content:flex-start}
+}
+@media (max-width:640px){
+  .wrap{width:calc(100% - 32px)}
+  .bar .wrap span:last-child{display:none}
+  .bar .wrap{justify-content:center}
+  .hero__foot{grid-template-columns:1fr}
+  .hero__tag{left:-12px;bottom:20px;min-width:180px}
+  .hero__visual{width:92%}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .card{padding:12px 12px 16px}
+  .card__top{margin-bottom:10px}
+  .card__quick{transform:none;padding:10px 12px;font-size:11px}
+  .card__row{flex-direction:column;gap:4px}
+  .card__row h3{font-size:17px}
+  .about__cols{grid-template-columns:1fr}
+  .stat{grid-template-columns:48px minmax(0,1fr)}
+  .stat span:last-child{grid-column:2;text-align:left;margin-top:-14px}
+  .row2{grid-template-columns:1fr}
+  .cart-btn .label{display:none}
+  .footer__grid{grid-template-columns:1fr}
+  .modal{padding:0;align-items:end}
+  .modal__panel{max-height:94vh}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-delay:0s !important;transition-duration:.01ms !important}
+  html{scroll-behavior:auto}
+}
+
+/* ===== ENHANCEMENTS — toolbar, search, toast, wishlist, admin login ===== */
+.shop-toolbar{
+  display:flex;gap:16px;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  margin-bottom:18px;padding:14px 0;border-bottom:1px solid var(--line-dark);
+}
+.search-wrap{
+  display:flex;align-items:center;gap:10px;
+  flex:1;min-width:220px;max-width:420px;
+  background:var(--surface);border:1px solid var(--line);
+  padding:10px 14px;
+}
+.search-wrap svg{width:14px;height:14px;color:var(--muted);flex:none}
+.search-wrap input{border:0;background:transparent;outline:none;width:100%;font-size:14px;color:var(--ink)}
+.search-wrap input::placeholder{color:#9d968a}
+.search-wrap:focus-within{border-color:var(--ink)}
+.sort-select{
+  padding:10px 12px;border:1px solid var(--line);background:var(--surface);
+  font-size:13px;font-weight:500;color:var(--ink);border-radius:2px;min-width:170px;
+}
+.sort-select:focus{outline:none;border-color:var(--ink)}
+.wishlist-btn{
+  position:absolute;top:10px;right:10px;z-index:2;
+  width:34px;height:34px;display:grid;place-items:center;
+  background:rgba(245,241,232,.92);border:1px solid var(--line);
+  color:var(--muted);transition:background .2s,color .2s,transform .2s;
+}
+.wishlist-btn:hover{background:var(--surface);color:var(--ink)}
+.wishlist-btn.active{color:var(--rust);background:var(--surface);border-color:var(--rust)}
+.wishlist-btn svg{width:16px;height:16px}
+.wishlist-btn.active svg{fill:var(--rust);stroke:var(--rust)}
+.stock{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--muted)}
+.stock.low{color:var(--rust)}
+.toast-stack{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  z-index:120;display:flex;flex-direction:column;gap:10px;pointer-events:none;
+  width:min(420px,calc(100% - 24px));
+}
+.toast{
+  background:var(--ink);color:var(--surface);
+  padding:14px 18px;font-size:13px;font-weight:500;
+  display:flex;align-items:center;gap:12px;
+  box-shadow:0 16px 40px rgba(26,32,51,.28);
+  border-left:3px solid var(--rust);
+  animation:toastIn .45s var(--ease) both;
+  pointer-events:auto;
+}
+.toast--ok{border-left-color:#5a7a5a}
+.toast--err{border-left-color:var(--rust)}
+.toast svg{width:16px;height:16px;flex:none}
+@keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.checkout__error{
+  background:#fdf0ec;border:1px solid #e8c4b8;color:#6b2a1a;
+  padding:12px 14px;font-size:13px;margin-bottom:16px;
+}
+.admin-login{padding:32px 30px 28px}
+.admin-login h3{margin:0 0 8px;font-family:var(--serif);font-weight:400;font-size:26px}
+.admin-login p{margin:0 0 18px;color:var(--muted);font-size:14px}
+.admin-login .field{margin-bottom:12px}
+.orders-list{margin-top:24px;border-top:1px solid var(--line-dark);padding-top:18px}
+.orders-list h4{font-family:var(--serif);font-weight:400;font-size:22px;margin:0 0 14px}
+.order-card{border:1px solid var(--line);background:var(--surface);padding:14px 16px;margin-bottom:12px}
+.order-card__head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.order-card__head b{color:var(--ink)}
+.order-card ul{margin:0;padding:0;list-style:none}
+.order-card li{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:13px}
+.order-card li:last-child{border:0}
+.newsletter{margin-top:0}
+.newsletter__row{display:flex;gap:0;max-width:420px}
+.newsletter__row input{flex:1;padding:12px 14px;border:1px solid rgba(245,241,232,.22);background:rgba(245,241,232,.08);color:var(--surface);font-size:14px}
+.newsletter__row input::placeholder{color:rgba(245,241,232,.45)}
+.newsletter__row button{padding:12px 18px;background:var(--surface);color:var(--ink);font-size:13px;font-weight:600;white-space:nowrap}
+.newsletter__row button:hover{background:var(--paper)}
+.newsletter__msg{font-size:12px;margin-top:10px;min-height:14px}
+.newsletter__msg.ok{color:#b8d0b8}
+.hero__visual{cursor:pointer}
+
+</style>
+</head>
+
+<body id="top">
+
+<!-- ================= ANNOUNCEMENT ================= -->
+<div class="bar">
+  <div class="wrap">
+    <span>Free UK delivery over £250</span>
+    <span>Shipping worldwide &middot; 14-day returns</span>
+  </div>
+</div>
+
+<!-- ================= HEADER ================= -->
+<header class="header" id="header">
+  <div class="wrap header__inner">
+    <nav class="nav">
+      <a href="#shop">Shop</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <button class="menu-btn" id="menuBtn" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h18M3 16h18"/></svg>
+    </button>
+
+    <a href="#top" class="logo">FS<span>.</span>Sells</a>
+
+    <div class="header__actions">
+      <button class="icon-btn" id="adminBtn" title="Edit products" aria-label="Edit products">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>
+      </button>
+      <button class="cart-btn" id="cartBtn" aria-label="Open bag">
+        <span class="label">Bag</span> <span class="count" id="cartCount">0</span>
+      </button>
+    </div>
+  </div>
+  <nav class="mobile-nav" id="mobileNav">
+    <a href="#shop">Shop</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="wrap hero__grid">
+    <div>
+      <div class="hero__meta mono">
+        <span>Designer denim</span>
+        <span>Current drop &mdash; <b id="heroCount">0</b> styles</span>
+        <span>From <b id="heroFrom">—</b></span>
+      </div>
+      <h1>
+        <span class="ln"><span>Denim that</span></span>
+        <span class="ln indent"><span><i>means</i></span></span>
+        <span class="ln"><span>something.</span></span>
+      </h1>
+      <div class="hero__foot">
+        <p class="lede">
+          Hand-picked designer jeans, authenticated and sold in limited runs.
+          Chosen for cloth, cut and the fit that actually lasts.
+        </p>
+        <div class="hero__cta">
+          <a class="btn btn--dark" href="#shop">Shop the drop
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8h11M9 4l4 4-4 4"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <figure class="hero__visual" style="margin:0">
+      <img id="heroImg" alt="">
+      <div class="hero__tag">
+        <span class="mono">Lot / Featured</span>
+        <strong id="heroTitle">—</strong>
+        <dl>
+          <dt>Cut</dt><dd id="heroCut">—</dd>
+          <dt>Price</dt><dd id="heroPrice">—</dd>
+        </dl>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<!-- ================= MARQUEE ================= -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track" id="marqueeTrack">
+    <span>Authenticated designer denim</span>
+    <span>Limited runs only</span>
+    <span>Checked by hand</span>
+    <span>14-day returns</span>
+    <span>Worldwide delivery</span>
+  </div>
+</div>
+
+<!-- ================= SHOP ================= -->
+<section class="section" id="shop">
+  <div class="wrap">
+    <div class="section__head">
+      <div>
+        <p class="section__label mono">01 &mdash; The collection</p>
+        <h2>On the rail</h2>
+        <p id="productCount">—</p>
+      </div>
+      <div class="filters" id="filters"></div>
+    </div>
+        <div class="shop-toolbar">
+      <label class="search-wrap" aria-label="Search products">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M20 20L16.5 16.5"/></svg>
+        <input id="searchInput" type="search" placeholder="Search denim, cut, wash…" autocomplete="off">
+      </label>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <select class="sort-select" id="sortSelect" aria-label="Sort products">
+          <option value="default">Sort: Featured</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="name">Name: A — Z</option>
+          <option value="newest">Newest first</option>
+        </select>
+        <span class="mono" id="wishlistCount" style="font-size:11px;opacity:.0;pointer-events:none">0 saved</span>
+      </div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<div class="selvedge" aria-hidden="true"></div>
+
+<!-- ================= ABOUT ================= -->
+<section class="section about" id="about">
+  <div class="wrap about__grid">
+    <figure class="about__media" style="margin:0">
+      <img id="aboutImg" alt="FS.SELLS denim">
+      <figcaption class="mono"><span>Fig. 02</span><span>Sourced &amp; checked by hand</span></figcaption>
+    </figure>
+    <div class="about__text">
+      <p class="section__label mono">02 &mdash; About</p>
+      <h2>Curated,<br>not <i>cluttered.</i></h2>
+      <div class="about__cols">
+        <p>
+          FS.SELLS started with a simple frustration: too much noise, not enough
+          quality denim. Every pair in this store is sourced, checked by hand, and
+          photographed exactly as it arrives.
+        </p>
+        <p>
+          We keep the collection small on purpose. When a pair sells out, it's gone,
+          and something new takes its place.
+        </p>
+      </div>
+      <ul class="stats">
+        <li class="stat"><span class="mono">i.</span><strong>Authenticated</strong><span>Every pair verified</span></li>
+        <li class="stat"><span class="mono">ii.</span><strong>48 hours</strong><span>Dispatch time</span></li>
+        <li class="stat"><span class="mono">iii.</span><strong>14 days</strong><span>Easy returns</span></li>
+        <li class="stat"><span class="mono">iv.</span><strong>Worldwide</strong><span>Tracked shipping</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer" id="contact">
+  <div class="wrap">
+    <p class="footer__big">FS<span>.</span>Sells</p>
+    <div class="footer__grid">
+      <div>
+        <h4>The shop</h4>
+        <p>Designer denim, curated in limited runs. Sourced, checked and shipped with care.</p>
+        <form class="newsletter" id="newsletterForm" style="margin-top:18px">
+          <label class="mono" style="display:block;color:rgba(245,241,232,.5);margin-bottom:8px;font-size:11px">Join the list — early access to drops</label>
+          <div class="newsletter__row">
+            <input name="email" type="email" required placeholder="your@email.com" aria-label="Email">
+            <button type="submit">Join</button>
+          </div>
+          <div class="newsletter__msg" id="newsletterMsg"></div>
+        </form>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <a href="#shop">All jeans</a>
+        <a href="#shop">New arrivals</a>
+        <a href="#about">About us</a>
+      </div>
+      <div>
+        <h4>Support</h4>
+        <a href="mailto:orders@fssells.com" id="footEmail">orders@fssells.com</a>
+
+        <a href="#contact">Shipping &amp; returns</a>
+        <a href="#contact">Size guide</a>
+      </div>
+
+    </div>
+    <div class="footer__bottom">
+      <span>&copy; <span id="year"></span> FS.SELLS. All rights reserved.</span>
+      <span>Prices include VAT where applicable.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast-stack" id="toastStack" aria-live="polite"></div>
+
+<!-- ================= OVERLAY ================= -->
+<div class="overlay" id="overlay"></div>
+
+<!-- ================= CART DRAWER ================= -->
+<aside class="drawer" id="cartDrawer" aria-label="Shopping bag">
+  <div class="drawer__head">
+    <h3>Your bag <span class="mono">(<span id="drawerCount">0</span>)</span></h3>
+    <button class="close-x" data-close-drawer aria-label="Close bag">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3l10 10M13 3L3 13"/></svg>
+    </button>
+  </div>
+  <div class="drawer__body" id="cartBody"></div>
+  <div class="drawer__foot" id="cartFoot"></div>
+</aside>
+
+<!-- ================= PRODUCT QUICK VIEW ================= -->
+<div class="modal" id="productModal">
+  <div class="modal__panel">
+    <button class="modal__close" data-close-modal aria-label="Close">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3l10 10M13 3L3 13"/></svg>
+    </button>
+    <div class="pv" id="pvContent"></div>
+  </div>
+</div>
+
+<!-- ================= CHECKOUT MODAL ================= -->
+<div class="modal" id="checkoutModal">
+  <div class="modal__panel">
+    <button class="modal__close" data-close-modal aria-label="Close">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3l10 10M13 3L3 13"/></svg>
+    </button>
+    <div id="checkoutContent"></div>
+  </div>
+</div>
+
+<!-- ================= ADMIN PANEL ================= -->
+<div class="modal" id="adminModal">
+  <div class="modal__panel" style="width:min(1040px,100%)">
+    <button class="modal__close" data-close-modal aria-label="Close">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3l10 10M13 3L3 13"/></svg>
+    </button>
+
+    <div class="admin__head">
+      <div>
+        <h2>Edit your store</h2>
+        <p>Change titles, prices, images and categories. Changes save to this browser.</p>
+      </div>
+    </div>
+
+    <div class="admin__body" id="adminBody"></div>
+
+    <div class="admin__foot">
+      <div class="left">
+        <button class="btn btn--ghost btn--sm" id="adminAdd">Add product</button>
+        <button class="btn btn--ghost btn--sm" id="adminExport">Export code</button>
+        <button class="btn btn--ghost btn--sm" id="adminReset">Reset to file defaults</button>
+      </div>
+      <button class="btn btn--dark btn--sm" id="adminSave">Save changes</button>
+    </div>
+
+    <div class="admin__body hidden" id="exportWrap" style="padding-top:0">
+      <p style="font-size:13px;color:var(--muted);margin:0">
+        Copy this and paste it over the <code>DEFAULT_PRODUCTS</code> array in your
+        HTML file, then bump <code>DATA_VERSION</code> by 1. That makes your edits
+        permanent for every visitor.
+      </p>
+      <textarea class="export-box" id="exportBox" readonly></textarea>
+      <button class="btn btn--dark btn--sm" id="copyExport" style="margin-top:12px">Copy to clipboard</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ================= ADMIN LOGIN ================= -->
+<div class="modal" id="adminLoginModal">
+  <div class="modal__panel" style="width:min(420px,100%)">
+    <button class="modal__close" data-close-modal aria-label="Close">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3l10 10M13 3L3 13"/></svg>
+    </button>
+    <div class="admin-login">
+      <h3>Enter admin password</h3>
+      <p>Needed to edit products &amp; view orders. Default is <code>fs-sells-admin-2024</code> — change it in <code>.env</code>.</p>
+      <div class="field">
+        <label for="adminPass">Password</label>
+        <input id="adminPass" type="password" placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <div id="adminLoginErr" class="checkout__error hidden"></div>
+      <button class="btn btn--dark btn--full" id="adminLoginBtn">Unlock editor</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   SECTION 1 — STORE SETTINGS
+   Edit anything in this block. Nothing else needs touching.
+   ============================================================ */
+const CONFIG = {
+  storeName: 'FS.SELLS',
+
+  // Currency shown across the site
+  currency: '£',            // change to '$' or '€' if needed
+  currencyCode: 'gbp',      // 'usd', 'eur' — used by Stripe
+
+  // Shipping
+  shippingFlat: 12,         // flat shipping fee
+  freeShippingOver: 250,    // free shipping above this subtotal (0 = never)
+
+  // Where orders / enquiries go
+  orderEmail: 'orders@fssells.com',
+
+  /* ---------------------------------------------------------
+     PAYMENTS
+     ---------------------------------------------------------
+     Leave checkoutEndpoint EMPTY to run in demo mode (no money
+     moves — perfect for testing).
+
+     To take REAL card payments:
+       1. Create a Stripe account → https://stripe.com
+       2. Deploy the tiny server in the setup notes (server.js)
+       3. Paste its URL below, e.g. '/api/create-checkout-session'
+       4. Paste your Stripe publishable key (pk_live_...)
+     --------------------------------------------------------- */
+  checkoutEndpoint: '/api/create-checkout-session',
+  stripePublishableKey: '',             // e.g. 'pk_live_xxxxxxxx'
+};
+
+/* ============================================================
+   SECTION 2 — YOUR PRODUCTS
+   ------------------------------------------------------------
+   Change titles, prices and image URLs here.
+   Or click the sliders button in the header to edit visually.
+
+   image: paste any image URL (https://...).
+          Leave as '' to use the automatic denim placeholder.
+   ============================================================ */
+const DATA_VERSION = 1;   // increase this number by 1 whenever you edit below
+
+const DEFAULT_PRODUCTS = [
+  {
+    id: 'p1',
+    title: 'Indigo Noir Slim',
+    price: 189,
+    category: 'Slim',
+    badge: 'New',
+    image: '',
+    description: 'Deep indigo with a clean slim taper. Mid-rise, comfort-stretch selvedge blend that holds its shape all day.',
+    paymentLink: ''   // optional: paste a Stripe Payment Link for 1-click buy
+  },
+  {
+    id: 'p2',
+    title: 'Vintage Wash Straight',
+    price: 215,
+    category: 'Straight',
+    badge: '',
+    image: '',
+    description: 'A true straight leg in a faded vintage wash. Rigid 13oz denim that softens beautifully with wear.',
+    paymentLink: ''
+  },
+  {
+    id: 'p3',
+    title: 'Midnight Raw Selvedge',
+    price: 265,
+    category: 'Selvedge',
+    badge: 'Limited',
+    image: '',
+    description: 'Unwashed raw selvedge with a deep midnight cast. Cut narrow, built to fade to your shape.',
+    paymentLink: ''
+  },
+  {
+    id: 'p4',
+    title: 'Sandstone Wide Leg',
+    price: 198,
+    category: 'Wide',
+    badge: '',
+    image: '',
+    description: 'Relaxed wide leg with a soft sandstone finish. High-rise, fluid drape, effortless from day to night.',
+    paymentLink: ''
+  },
+  {
+    id: 'p5',
+    title: 'Obsidian Skinny',
+    price: 175,
+    category: 'Skinny',
+    badge: '',
+    image: '',
+    description: 'Jet-black skinny with four-way stretch. A sharp, pared-back staple that keeps its colour.',
+    paymentLink: ''
+  },
+  {
+    id: 'p6',
+    title: 'Stone Grey Relaxed',
+    price: 205,
+    category: 'Relaxed',
+    badge: '',
+    image: '',
+    description: 'Washed stone grey in a relaxed fit. Roomy through the thigh with a clean, tapered ankle.',
+    paymentLink: ''
+  },
+  {
+    id: 'p7',
+    title: 'Archive Bootcut',
+    price: 230,
+    category: 'Bootcut',
+    badge: 'Restocked',
+    image: '',
+    description: 'A 90s archive bootcut, re-cut for now. Sits high, kicks out gently, stacks perfectly over boots.',
+    paymentLink: ''
+  },
+  {
+    id: 'p8',
+    title: 'Ecru Carpenter',
+    price: 210,
+    category: 'Carpenter',
+    badge: '',
+    image: '',
+    description: 'Ecru carpenter jean with utility pockets and a hammer loop. Heavyweight cotton, zero stretch.',
+    paymentLink: ''
+  },
+];
+
+/* ============================================================
+   SECTION 3 — INTERNAL (no need to edit below)
+   ============================================================ */
+
+
+/* ---------- API integration ---------- */
+const API = {
+  base: '',
+  token: sessionStorage.getItem('fs_admin_token') || '',
+  async getProducts(params = {}) {
+    const q = new URLSearchParams(params).toString();
+    const r = await fetch('/api/products' + (q ? '?' + q : ''));
+    if (!r.ok) throw new Error('Failed to load products');
+    return r.json();
+  },
+  async config() {
+    try { const r = await fetch('/api/config'); if (r.ok) return await r.json(); } catch(e){}
+    return null;
+  },
+  async login(pw) {
+    const r = await fetch('/api/admin/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pw })});
+    const j = await r.json();
+    if (!r.ok) throw new Error(j.error || 'Login failed');
+    return j;
+  },
+  headers() {
+    const h = { 'Content-Type':'application/json' };
+    if (this.token) h['X-Admin-Token'] = this.token;
+    return h;
+  }
+};
+
+/* ---------- Toast ---------- */
+function toast(msg, type='ok', ms=2800){
+  const stack = document.getElementById('toastStack');
+  if(!stack) return;
+  const el = document.createElement('div');
+  el.className = 'toast ' + (type==='err'?'toast--err':'toast--ok');
+  el.innerHTML = (type==='err' ? '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="6"/><path d="M8 5v4"/><circle cx="8" cy="11.2" r=".7" fill="currentColor" stroke="none"/></svg>' : '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3.5 8.5l3 3 6-7"/></svg>') + '<span>' + esc(msg) + '</span>';
+  stack.appendChild(el);
+  setTimeout(()=>{ el.style.opacity='0'; el.style.transform='translateY(6px)'; el.style.transition='all .35s'; setTimeout(()=>el.remove(),380); }, ms);
+}
+
+/* ---------- Wishlist (local) ---------- */
+const LS_WISH = 'fs_wishlist';
+let wishlist = (()=>{ try{ return JSON.parse(localStorage.getItem(LS_WISH)||'[]'); }catch(e){ return []; }})();
+function saveWish(){ try{ localStorage.setItem(LS_WISH, JSON.stringify(wishlist)); }catch(e){} updateWishlistCount(); }
+function toggleWish(id){
+  const i = wishlist.indexOf(id);
+  if(i>=0) wishlist.splice(i,1); else wishlist.push(id);
+  saveWish(); renderShop(); toast(i>=0 ? 'Removed from saved' : 'Saved — find it via search', 'ok');
+}
+function isWished(id){ return wishlist.includes(id); }
+function updateWishlistCount(){
+  const el = document.getElementById('wishlistCount');
+  if(!el) return;
+  if(wishlist.length){ el.textContent = wishlist.length + ' saved'; el.style.opacity='1'; } else { el.textContent=''; el.style.opacity='0'; }
+}
+
+/* ---------- Helpers ---------- */
+const $  = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+
+function esc(str) {
+  return String(str ?? '')
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+function money(n) {
+  return CONFIG.currency + Number(n || 0).toFixed(2);
+}
+
+/* Auto-generated denim placeholder (used when image is empty) */
+function placeholder(title, i = 0) {
+  const tones = [
+    ['#24314f', '#34466d'],
+    ['#1c263d', '#2d3c5c'],
+    ['#3a4560', '#525e7a'],
+    ['#2a3550', '#3d4c6e'],
+  ];
+  const [a, b] = tones[i % tones.length];
+  const label = esc(String(title || 'FS.SELLS').toUpperCase().slice(0, 24));
+  const no = String((i % 99) + 1).padStart(2, '0');
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+<defs>
+<linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient>
+<pattern id="t" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(-62)"><rect width="9" height="9" fill="transparent"/><rect width="3" height="9" fill="rgba(255,255,255,.045)"/></pattern>
+</defs>
+<rect width="800" height="1000" fill="url(#g)"/>
+<rect width="800" height="1000" fill="url(#t)"/>
+<path d="M210 250 H590 V560 Q400 640 210 560 Z" fill="rgba(0,0,0,.08)" stroke="#c8925a" stroke-opacity=".55" stroke-width="2.5" stroke-dasharray="10 8"/>
+<path d="M232 272 H568 V546 Q400 618 232 546 Z" fill="none" stroke="#c8925a" stroke-opacity=".35" stroke-width="2" stroke-dasharray="10 8"/>
+<g transform="translate(470 760) rotate(-4)">
+<rect width="230" height="118" fill="#efe9dc"/>
+<rect x="0" y="0" width="230" height="5" fill="#a4472d"/>
+<text x="18" y="44" font-family="Georgia,serif" font-size="26" fill="#1a2033">FS.Sells</text>
+<text x="18" y="74" font-family="Menlo,monospace" font-size="12" letter-spacing="1.5" fill="#6d6758">NO. ${no}</text>
+<text x="18" y="96" font-family="Menlo,monospace" font-size="11" letter-spacing="1.2" fill="#6d6758">${label}</text>
+</g>
+</svg>`;
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+}
+
+/* Inline line icons */
+const ICON = {
+  arrow: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8h11M9 4l4 4-4 4"/></svg>',
+  plus:  '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v12M2 8h12"/></svg>',
+  bag:   '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 16h30l-2 26H11z"/><path d="M17 16v-3a7 7 0 0 1 14 0v3"/></svg>',
+  lock:  '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="7" width="10" height="7"/><path d="M5 7V5a3 3 0 0 1 6 0v2"/></svg>',
+  check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  upload:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 11V2M4 6l4-4 4 4M2 14h12"/></svg>',
+};
+
+function imageFor(product, index) {
+  return product.image && String(product.image).trim()
+    ? product.image
+    : placeholder(product.title, index);
+}
+
+/* ---------- State ---------- */
+const LS_PRODUCTS = 'fs_products_v' + DATA_VERSION;
+const LS_CART = 'fs_cart';
+
+let products = loadProducts();
+let cart = loadCart();
+let activeFilter = 'All';
+
+function loadProducts() {
+  try {
+    const raw = localStorage.getItem(LS_PRODUCTS);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length) return parsed;
+    }
+  } catch (e) { /* ignore */ }
+  return JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
+}
+function saveProducts() {
+  try { localStorage.setItem(LS_PRODUCTS, JSON.stringify(products)); } catch (e) {}
+}
+function loadCart() {
+  try {
+    const raw = localStorage.getItem(LS_CART);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (e) { return []; }
+}
+function saveCart() {
+  try { localStorage.setItem(LS_CART, JSON.stringify(cart)); } catch (e) {}
+}
+const byId = id => products.find(p => p.id === id);
+
+/* ---------- Render: filters ---------- */
+function renderFilters() {
+  const cats = ['All', ...new Set(products.map(p => p.category).filter(Boolean))];
+  if (!cats.includes(activeFilter)) activeFilter = 'All';
+  $('#filters').innerHTML = cats.map(c =>
+    `<button class="chip ${c === activeFilter ? 'active' : ''}" data-filter="${esc(c)}">${esc(c)}</button>`
+  ).join('');
+}
+
+/* ---------- Render: product grid ---------- */
+function renderShop() {
+  const list = activeFilter === 'All'
+    ? products
+    : products.filter(p => p.category === activeFilter);
+
+  const grid = $('#grid');
+
+  if (!list.length) {
+    grid.innerHTML = `<p class="empty-note">No products in this category yet.</p>`;
+    $('#productCount').textContent = '';
+    return;
+  }
+
+  grid.innerHTML = list.map((p, i) => `
+    <article class="card" data-id="${esc(p.id)}">
+      <div class="card__top mono">
+        <span>No. ${String(products.indexOf(p) + 1).padStart(2, '0')}</span>
+        ${p.badge ? `<span class="badge">${esc(p.badge)}</span>` : ''}
+      </div>
+      <div class="card__media">
+        <img src="${esc(imageFor(p, products.indexOf(p)))}"
+             data-fallback="${placeholder(p.title, products.indexOf(p))}"
+             alt="${esc(p.title)}" loading="lazy">
+        <button class="card__quick" data-quick="${esc(p.id)}"><span>Add to bag</span>${ICON.plus}</button>
+      </div>
+      <div class="card__body">
+        <div class="card__row">
+          <h3>${esc(p.title)}</h3>
+          <span class="price">${money(p.price)}</span>
+        </div>
+        <p class="card__cat mono">${esc(p.category || 'Denim')}</p>
+      </div>
+    </article>
+  `).join('');
+
+  // image fallbacks
+  $$('#grid img').forEach(img => {
+    img.addEventListener('error', () => {
+      if (img.dataset.fallback && img.src !== img.dataset.fallback) {
+        img.src = img.dataset.fallback;
+      }
+    }, { once: true });
+  });
+
+  $('#productCount').textContent =
+    `${list.length} ${list.length === 1 ? 'style' : 'styles'} available`;
+}
+
+/* ---------- Render: hero feature ---------- */
+function renderHero() {
+  $('#heroCount').textContent = products.length;
+  $('#heroFrom').textContent = products.length
+    ? money(Math.min(...products.map(p => Number(p.price) || 0)))
+    : '—';
+  const p = products[0];
+  const img = $('#heroImg');
+  if (!p) return;
+  img.src = imageFor(p, 0);
+  img.alt = p.title;
+  img.onerror = () => { img.onerror = null; img.src = placeholder(p.title, 0); };
+  $('#heroTitle').textContent = p.title;
+  $('#heroCut').textContent = p.category || 'Denim';
+  $('#heroPrice').textContent = money(p.price);
+}
+
+/* ---------- Cart ---------- */
+function cartCount() {
+  return cart.reduce((n, l) => n + l.qty, 0);
+}
+function totals() {
+  const sub = cart.reduce((sum, l) => {
+    const p = byId(l.id);
+    return p ? sum + p.price * l.qty : sum;
+  }, 0);
+  const free = CONFIG.freeShippingOver > 0 && sub >= CONFIG.freeShippingOver;
+  const ship = (sub === 0 || free) ? 0 : CONFIG.shippingFlat;
+  return { sub, ship, total: sub + ship, free };
+}
+
+function addToCart(id, qty = 1) {
+  if (!byId(id)) return;
+  const line = cart.find(l => l.id === id);
+  if (line) line.qty += qty;
+  else cart.push({ id, qty });
+  saveCart();
+  renderCart();
+  openCart();
+}
+
+function setQty(id, qty) {
+  const line = cart.find(l => l.id === id);
+  if (!line) return;
+  if (qty <= 0) cart = cart.filter(l => l.id !== id);
+  else line.qty = qty;
+  saveCart();
+  renderCart();
+}
+
+function renderCart() {
+  const body = $('#cartBody');
+  const foot = $('#cartFoot');
+  const count = cartCount();
+
+  $('#cartCount').textContent = count;
+  $('#drawerCount').textContent = count;
+
+  if (!cart.length) {
+    body.innerHTML = `
+      <div class="empty-cart">
+        <div class="big">${ICON.bag}</div>
+        <h4>Nothing here yet</h4>
+        <p style="font-size:14px;margin:0 0 24px">Pick a pair from the rail to get started.</p>
+        <button class="btn btn--dark btn--sm" data-close-drawer>Browse the collection</button>
+      </div>`;
+    foot.innerHTML = '';
+    return;
+  }
+
+  body.innerHTML = cart.map(line => {
+    const p = byId(line.id);
+    if (!p) return '';
+    const idx = products.indexOf(p);
+    return `
+      <div class="line">
+        <img src="${esc(imageFor(p, idx))}" data-fallback="${placeholder(p.title, idx)}" alt="${esc(p.title)}">
+        <div class="line__info">
+          <h4>${esc(p.title)}</h4>
+          <p class="cat">${esc(p.category || 'Denim')}</p>
+          <div class="line__bottom">
+            <div class="qty">
+              <button data-dec="${esc(p.id)}" aria-label="Decrease">−</button>
+              <span>${line.qty}</span>
+              <button data-inc="${esc(p.id)}" aria-label="Increase">+</button>
+            </div>
+            <span class="line__price">${money(p.price * line.qty)}</span>
+          </div>
+          <button class="remove" data-remove="${esc(p.id)}">Remove</button>
+        </div>
+      </div>`;
+  }).join('');
+
+  $$('#cartBody img').forEach(img => {
+    img.addEventListener('error', () => {
+      if (img.dataset.fallback) img.src = img.dataset.fallback;
+    }, { once: true });
+  });
+
+  const t = totals();
+  foot.innerHTML = `
+    ${!t.free && CONFIG.freeShippingOver > 0
+      ? `<div class="ship-note">${money(CONFIG.freeShippingOver - t.sub)} away from free shipping
+           <div class="meter"><i style="transform:scaleX(${Math.min(1, t.sub / CONFIG.freeShippingOver)})"></i></div></div>`
+      : t.free ? `<div class="ship-note">Free shipping applied to this order</div>` : ''}
+    <div class="totals">
+      <div class="totals__row"><span>Subtotal</span><span>${money(t.sub)}</span></div>
+      <div class="totals__row"><span>Shipping</span><span>${t.ship === 0 ? 'Free' : money(t.ship)}</span></div>
+      <div class="totals__row grand"><span>Total</span><span>${money(t.total)}</span></div>
+    </div>
+    <button class="btn btn--dark btn--full" id="checkoutBtn">Checkout ${ICON.arrow}</button>`;
+}
+
+/* ---------- Drawer / modal controls ---------- */
+function openCart() {
+  // Close any open modal first so the drawer isn't hidden behind it
+  $$('.modal').forEach(m => m.classList.remove('open'));
+  $('#cartDrawer').classList.add('open');
+  $('#overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeAll() {
+  $('#cartDrawer').classList.remove('open');
+  $('#overlay').classList.remove('open');
+  $$('.modal').forEach(m => m.classList.remove('open'));
+  document.body.style.overflow = '';
+}
+function openModal(id) {
+  closeAll();
+  $(id).classList.add('open');
+  $('#overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+/* ---------- Product quick view ---------- */
+function openProduct(id) {
+  const p = byId(id);
+  if (!p) return;
+  const idx = products.indexOf(p);
+  const buyNow = p.paymentLink
+    ? `<a class="btn btn--ghost btn--full" href="${esc(p.paymentLink)}" target="_blank" rel="noopener" style="margin-top:10px">Buy now</a>`
+    : '';
+
+  $('#pvContent').innerHTML = `
+    <div class="pv__media">
+      <img src="${esc(imageFor(p, idx))}" data-fallback="${placeholder(p.title, idx)}" alt="${esc(p.title)}">
+    </div>
+    <div class="pv__info">
+      <p class="cat">${esc(p.category || 'Denim')}</p>
+      <h2>${esc(p.title)}</h2>
+      <p class="pv__price">${money(p.price)}</p>
+      <p class="pv__desc">${esc(p.description || 'Curated designer denim, sourced and checked by hand.')}</p>
+      <button class="btn btn--dark btn--full" data-add="${esc(p.id)}">Add to bag ${ICON.arrow}</button>
+      ${buyNow}
+      <div class="pv__meta">
+        <div>Authenticated &amp; quality checked</div>
+        <div>Dispatched within 48 hours</div>
+        <div>14-day returns</div>
+      </div>
+    </div>`;
+
+  const img = $('#pvContent img');
+  if (img) img.addEventListener('error', () => { if (img.dataset.fallback) img.src = img.dataset.fallback; }, { once: true });
+
+  openModal('#productModal');
+}
+
+/* ---------- Checkout ---------- */
+function openCheckout() {
+  if (!cart.length) return;
+  renderCheckoutForm();
+  openModal('#checkoutModal');
+}
+
+function renderCheckoutForm() {
+  const t = totals();
+  const summary = cart.map(l => {
+    const p = byId(l.id);
+    if (!p) return '';
+    return `<div class="summary-line">
+      <span>${esc(p.title)} <em>× ${l.qty}</em></span>
+      <span>${money(p.price * l.qty)}</span>
+    </div>`;
+  }).join('');
+
+  const demoMode = !CONFIG.checkoutEndpoint;
+
+  $('#checkoutContent').innerHTML = `
+    <div class="checkout">
+      <div class="checkout__form">
+        <h2>Checkout</h2>
+        <p class="sub">Enter your delivery details to complete your order.</p>
+
+        <form id="checkoutForm" novalidate>
+          <div class="field">
+            <label for="ck-name">Full name</label>
+            <input id="ck-name" name="name" required autocomplete="name" placeholder="Ellis Okafor">
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="ck-email">Email</label>
+              <input id="ck-email" name="email" type="email" required autocomplete="email" placeholder="ellis@mail.co.uk">
+            </div>
+            <div class="field">
+              <label for="ck-phone">Phone (optional)</label>
+              <input id="ck-phone" name="phone" autocomplete="tel" placeholder="+44 7700 900418">
+            </div>
+          </div>
+          <div class="field">
+            <label for="ck-address">Address</label>
+            <input id="ck-address" name="address" required autocomplete="address-line1" placeholder="27 Redchurch Street">
+          </div>
+          <div class="field">
+            <label for="ck-address2">Address line 2 (optional)</label>
+            <input id="ck-address2" name="address2" autocomplete="address-line2" placeholder="Flat / Unit">
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="ck-city">City</label>
+              <input id="ck-city" name="city" required autocomplete="address-level2" placeholder="London">
+            </div>
+            <div class="field">
+              <label for="ck-postcode">Postcode</label>
+              <input id="ck-postcode" name="postcode" required autocomplete="postal-code" placeholder="E1 6AN">
+            </div>
+          </div>
+          <div class="field">
+            <label for="ck-country">Country</label>
+            <input id="ck-country" name="country" required autocomplete="country-name" placeholder="United Kingdom">
+          </div>
+
+          <button type="submit" class="btn btn--dark btn--full" id="payBtn" style="margin-top:8px">
+            Pay ${money(t.total)}
+          </button>
+
+          <div class="secure">${ICON.lock} Secure checkout</div>
+          <div class="alt-pay">
+            Prefer to pay by invoice?
+            <button type="button" id="emailOrderBtn">Email your order</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="checkout__side">
+        <h3>Order summary</h3>
+        ${summary}
+        <div class="totals" style="margin-top:18px">
+          <div class="totals__row"><span>Subtotal</span><span>${money(t.sub)}</span></div>
+          <div class="totals__row"><span>Shipping</span><span>${t.ship === 0 ? 'Free' : money(t.ship)}</span></div>
+          <div class="totals__row grand"><span>Total</span><span>${money(t.total)}</span></div>
+        </div>
+        ${demoMode ? `
+          <div class="demo-flag">
+            <strong>Demo mode.</strong> No card will be charged. To accept real
+            payments, connect Stripe in the <code>CONFIG</code> block at the top of the file.
+          </div>` : ''}
+      </div>
+    </div>`;
+
+  $('#checkoutForm').addEventListener('submit', handleCheckout);
+  $('#emailOrderBtn').addEventListener('click', () => {
+    const order = buildOrder();
+    if (!order) return;
+    emailOrder(order);
+  });
+}
+
+function buildOrder() {
+  const form = $('#checkoutForm');
+  if (!form) return null;
+  if (!form.reportValidity()) return null;
+
+  const fd = new FormData(form);
+  const customer = {
+    name: fd.get('name') || '',
+    email: fd.get('email') || '',
+    phone: fd.get('phone') || '',
+    address: [fd.get('address'), fd.get('address2')].filter(Boolean).join(', '),
+    city: fd.get('city') || '',
+    postcode: fd.get('postcode') || '',
+    country: fd.get('country') || '',
+  };
+
+  const items = cart.map(l => {
+    const p = byId(l.id);
+    return p ? { id: p.id, title: p.title, price: p.price, qty: l.qty } : null;
+  }).filter(Boolean);
+
+  return { items, customer, totals: totals() };
+}
+
+async function handleCheckout(e) {
+  e.preventDefault();
+  const order = buildOrder();
+  if (!order) return;
+
+  const btn = $('#payBtn');
+  const original = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Processing…';
+
+  try {
+    const result = await processPayment(order);
+
+    // Real gateway returned a redirect URL
+    if (result && result.url) {
+      window.location.href = result.url;
+      return;
+    }
+
+    // Demo / offline success
+    showConfirmation(order, !!result.demo);
+  } catch (err) {
+    console.error(err);
+    alert('We could not start the payment. Please try again or email your order.');
+    btn.disabled = false;
+    btn.textContent = original;
+  }
+}
+
+/* ---------------------------------------------------------
+   processPayment — the integration point.
+   ---------------------------------------------------------
+   With CONFIG.checkoutEndpoint set, this POSTs the cart to your
+   server, which creates a Stripe Checkout Session and returns
+   { url }. Without it, it resolves in demo mode.
+   --------------------------------------------------------- */
+async function processPayment(order) {
+  if (CONFIG.checkoutEndpoint) {
+    const res = await fetch(CONFIG.checkoutEndpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        items: order.items,
+        customer: order.customer,
+        totals: order.totals,
+        currency: CONFIG.currencyCode,
+      }),
+    });
+    if (!res.ok) throw new Error('Checkout session failed');
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    return data; // { url: 'https://checkout.stripe.com/...' }
+  }
+
+  // Demo mode — simulate a short network delay
+  await new Promise(r => setTimeout(r, 1300));
+  return { demo: true };
+}
+
+function showConfirmation(order, isDemo) {
+  const orderNo = 'FS-' + Date.now().toString().slice(-6);
+  cart = [];
+  saveCart();
+  renderCart();
+
+  $('#checkoutContent').innerHTML = `
+    <div class="confirm">
+      <div class="confirm__tick">${ICON.check}</div>
+      <h2>Thank you, ${esc(order.customer.name.split(' ')[0] || 'friend')}.</h2>
+      <p>Your order has been received. A confirmation will be sent to
+         <strong>${esc(order.customer.email)}</strong>.</p>
+      <div class="ordernum">Order ${orderNo}</div>
+
+      ${isDemo ? `
+        <div class="demo-flag">
+          <strong>This was a demo order — no payment was taken.</strong><br>
+          Connect Stripe (see the <code>CONFIG</code> block) to accept real card
+          payments automatically, or use the email option at checkout to invoice
+          customers manually.
+        </div>` : ''}
+
+      <div style="text-align:left;max-width:420px;margin:0 auto 30px">
+        ${order.items.map(i => `
+          <div class="summary-line">
+            <span>${esc(i.title)} <em>× ${i.qty}</em></span>
+            <span>${money(i.price * i.qty)}</span>
+          </div>`).join('')}
+        <div class="totals" style="margin-top:16px">
+          <div class="totals__row grand"><span>Total paid</span><span>${money(order.totals.total)}</span></div>
+        </div>
+      </div>
+
+      <button class="btn btn--dark" data-close-modal>Continue shopping ${ICON.arrow}</button>
+    </div>`;
+}
+
+function emailOrder(order) {
+  const lines = order.items
+    .map(i => `• ${i.title} × ${i.qty} — ${money(i.price * i.qty)}`)
+    .join('\n');
+
+  const body =
+`New order — ${CONFIG.storeName}
+
+CUSTOMER
+${order.customer.name}
+${order.customer.email}
+${order.customer.phone || 'No phone provided'}
+
+DELIVER TO
+${order.customer.address}
+${order.customer.city}
+${order.customer.postcode}
+${order.customer.country}
+
+ITEMS
+${lines}
+
+Subtotal: ${money(order.totals.sub)}
+Shipping: ${order.totals.ship === 0 ? 'Free' : money(order.totals.ship)}
+TOTAL: ${money(order.totals.total)}`;
+
+  window.location.href =
+    `mailto:${CONFIG.orderEmail}?subject=${encodeURIComponent('New order — ' + CONFIG.storeName)}&body=${encodeURIComponent(body)}`;
+}
+
+/* ---------- Admin panel ---------- */
+function openAdmin() {
+  renderAdmin();
+  $('#exportWrap').classList.add('hidden');
+  openModal('#adminModal');
+}
+
+function renderAdmin() {
+  $('#adminBody').innerHTML = products.map((p, i) => `
+    <div class="admin__row" data-id="${esc(p.id)}">
+      <img src="${esc(imageFor(p, i))}" data-fallback="${placeholder(p.title, i)}" alt="">
+      <div class="admin__fields">
+        <label>Title
+          <input data-f="title" value="${esc(p.title)}">
+        </label>
+        <label>Price (${CONFIG.currency})
+          <input data-f="price" type="number" step="0.01" min="0" value="${esc(p.price)}">
+        </label>
+        <label>Category
+          <input data-f="category" value="${esc(p.category || '')}">
+        </label>
+        <label>Badge (optional)
+          <input data-f="badge" value="${esc(p.badge || '')}" placeholder="New / Limited / Sale">
+        </label>
+        <label class="full">Image URL
+          <input data-f="image" value="${esc(p.image || '')}" placeholder="https://example.com/jeans.jpg">
+        </label>
+        <label class="full">Description
+          <input data-f="description" value="${esc(p.description || '')}">
+        </label>
+        <label class="full">Stripe Payment Link (optional)
+          <input data-f="paymentLink" value="${esc(p.paymentLink || '')}" placeholder="https://buy.stripe.com/...">
+        </label>
+        <label class="upload-btn full">
+          ${ICON.upload} Upload image from device
+          <input type="file" accept="image/*" data-upload="${esc(p.id)}">
+        </label>
+      </div>
+      <button class="admin__del" data-del="${esc(p.id)}">Delete</button>
+    </div>
+  `).join('');
+
+  // image fallbacks
+  $$('#adminBody img').forEach(img => {
+    img.addEventListener('error', () => {
+      if (img.dataset.fallback) img.src = img.dataset.fallback;
+    }, { once: true });
+  });
+
+  // file uploads → base64 (keep files small, under ~300KB ideally)
+  $$('#adminBody input[type=file]').forEach(input => {
+    input.addEventListener('change', () => {
+      const file = input.files && input.files[0];
+      if (!file) return;
+      if (file.size > 900000) {
+        alert('That image is quite large. For best performance, host it online and paste the URL instead.');
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        const row = input.closest('.admin__row');
+        const urlField = row.querySelector('[data-f="image"]');
+        urlField.value = reader.result;
+        row.querySelector('img').src = reader.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+
+  // delete
+  $$('#adminBody [data-del]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.del;
+      const p = byId(id);
+      if (!p) return;
+      if (!confirm(`Delete "${p.title}"?`)) return;
+      products = products.filter(x => x.id !== id);
+      renderAdmin();
+    });
+  });
+}
+
+function collectAdmin() {
+  const rows = $$('#adminBody .admin__row');
+  const next = [];
+  rows.forEach(row => {
+    const id = row.dataset.id;
+    const get = f => {
+      const el = row.querySelector(`[data-f="${f}"]`);
+      return el ? el.value : '';
+    };
+    next.push({
+      id,
+      title: get('title').trim() || 'Untitled',
+      price: parseFloat(get('price')) || 0,
+      category: get('category').trim() || 'Denim',
+      badge: get('badge').trim(),
+      image: get('image').trim(),
+      description: get('description').trim(),
+      paymentLink: get('paymentLink').trim(),
+    });
+  });
+  products = next;
+}
+
+function saveAdmin() {
+  collectAdmin();
+  saveProducts();
+  renderFilters();
+  renderShop();
+  renderHero();
+  renderCart();
+  closeAll();
+}
+
+/* ---------- Boot ---------- */
+function init() {
+  $('#year').textContent = new Date().getFullYear();
+
+  // Marquee: duplicate content for a seamless loop
+  const track = $('#marqueeTrack');
+  track.innerHTML += track.innerHTML;
+
+  // About image
+  const aboutImg = $('#aboutImg');
+  aboutImg.src = placeholder('The Collection', 2);
+  aboutImg.dataset.fallback = placeholder('The Collection', 2);
+
+  renderHero();
+
+  renderFilters();
+  renderShop();
+  renderCart();
+
+  // Sticky header shadow
+  const header = $('#header');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 8);
+  }, { passive: true });
+
+  // Mobile nav
+  $('#menuBtn').addEventListener('click', () => {
+    $('#mobileNav').classList.toggle('open');
+  });
+  $$('#mobileNav a').forEach(a =>
+    a.addEventListener('click', () => $('#mobileNav').classList.remove('open'))
+  );
+
+  // Cart / admin buttons
+  $('#cartBtn').addEventListener('click', openCart);
+  $('#adminBtn').addEventListener('click', openAdmin);
+  $('#overlay').addEventListener('click', closeAll);
+
+  // Global click handling
+  document.addEventListener('click', e => {
+    if (e.target.closest('[data-close-drawer]') || e.target.closest('[data-close-modal]')) {
+      closeAll();
+      return;
+    }
+
+    const quick = e.target.closest('[data-quick]');
+    if (quick) { addToCart(quick.dataset.quick); return; }
+
+    const add = e.target.closest('[data-add]');
+    if (add) { addToCart(add.dataset.add); return; }
+
+    const inc = e.target.closest('[data-inc]');
+    if (inc) {
+      const line = cart.find(l => l.id === inc.dataset.inc);
+      if (line) setQty(line.id, line.qty + 1);
+      return;
+    }
+    const dec = e.target.closest('[data-dec]');
+    if (dec) {
+      const line = cart.find(l => l.id === dec.dataset.dec);
+      if (line) setQty(line.id, line.qty - 1);
+      return;
+    }
+    const rm = e.target.closest('[data-remove]');
+    if (rm) { setQty(rm.dataset.remove, 0); return; }
+
+    const filter = e.target.closest('[data-filter]');
+    if (filter) {
+      activeFilter = filter.dataset.filter;
+      renderFilters();
+      renderShop();
+      return;
+    }
+
+    if (e.target.closest('#checkoutBtn')) { openCheckout(); return; }
+
+    const card = e.target.closest('.card');
+    if (card) { openProduct(card.dataset.id); return; }
+  });
+
+  // Esc closes everything
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeAll();
+  });
+
+  // Admin footer buttons
+  $('#adminAdd').addEventListener('click', () => {
+    collectAdmin();
+    products.push({
+      id: 'p' + Date.now(),
+      title: 'New jean',
+      price: 0,
+      category: 'Denim',
+      badge: '',
+      image: '',
+      description: '',
+      paymentLink: '',
+    });
+    renderAdmin();
+    const body = $('#adminBody');
+    body.scrollTop = body.scrollHeight;
+  });
+
+  $('#adminSave').addEventListener('click', saveAdmin);
+
+  $('#adminReset').addEventListener('click', () => {
+    if (!confirm('Reset all products back to the ones written in the file? Your browser edits will be lost.')) return;
+    localStorage.removeItem(LS_PRODUCTS);
+    products = JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
+    renderFilters();
+    renderShop();
+    renderHero();
+    renderAdmin();
+  });
+
+  $('#adminExport').addEventListener('click', () => {
+    collectAdmin();
+    const wrap = $('#exportWrap');
+    wrap.classList.remove('hidden');
+    $('#exportBox').value = 'const DEFAULT_PRODUCTS = ' + JSON.stringify(products, null, 2) + ';';
+    wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+
+  $('#copyExport').addEventListener('click', async () => {
+    const box = $('#exportBox');
+    try {
+      await navigator.clipboard.writeText(box.value);
+      $('#copyExport').textContent = 'Copied';
+      setTimeout(() => { $('#copyExport').textContent = 'Copy to clipboard'; }, 1800);
+    } catch (err) {
+      box.select();
+      document.execCommand('copy');
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', init);
+
+/* ===== POST-INIT ENHANCEMENTS — search, sort, wishlist, API sync, admin auth, newsletter, success handling ===== */
+(function(){
+  const origInit = init;
+  let serverProducts = null;
+  let lastSearch = '';
+  let lastSort = 'default';
+
+  // Override products loading: try server first
+  async function syncFromServer(){
+    try{
+      const cfg = await API.config();
+      if(cfg){
+        CONFIG.currency = cfg.currency || CONFIG.currency;
+        CONFIG.currencyCode = cfg.currencyCode || CONFIG.currencyCode;
+        CONFIG.shippingFlat = cfg.shippingFlat ?? CONFIG.shippingFlat;
+        CONFIG.freeShippingOver = cfg.freeShippingOver ?? CONFIG.freeShippingOver;
+        CONFIG.storeName = cfg.storeName || CONFIG.storeName;
+        CONFIG.orderEmail = cfg.orderEmail || CONFIG.orderEmail;
+        const footEmail = document.getElementById('footEmail');
+        if(footEmail) { footEmail.textContent = cfg.orderEmail; footEmail.href = 'mailto:'+cfg.orderEmail; }
+      }
+      const data = await API.getProducts();
+      if(Array.isArray(data) && data.length){
+        serverProducts = data;
+        products = data;
+        // don't overwrite localStorage version — server is source of truth
+        saveProducts();
+        renderFilters();
+        renderShop();
+        renderHero();
+        renderCart();
+      }
+    }catch(e){
+      console.warn('API products not available, using local', e.message);
+    }
+  }
+
+  // Patched renderShop with search/sort/wishlist/stock
+  const _origRenderShop = renderShop;
+  window.renderShop = function(){
+    const term = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
+    const sort = document.getElementById('sortSelect')?.value || 'default';
+    let list = activeFilter === 'All' ? [...products] : products.filter(p => p.category === activeFilter);
+    if(term){
+      list = list.filter(p => (p.title+' '+(p.category||'')+' '+(p.description||'')+' '+(p.badge||'')).toLowerCase().includes(term));
+    }
+    if(sort === 'price-asc') list.sort((a,b)=>a.price-b.price);
+    if(sort === 'price-desc') list.sort((a,b)=>b.price-a.price);
+    if(sort === 'name') list.sort((a,b)=>a.title.localeCompare(b.title));
+    if(sort === 'newest') list.sort((a,b)=> (products.indexOf(b)-products.indexOf(a)) );
+    const grid = document.getElementById('grid');
+    if(!list.length){
+      const msg = term ? `No results for “${esc(term)}”.` : 'No products in this category yet.';
+      grid.innerHTML = `<p class="empty-note">${msg} ${wishlist.length ? '<br><button class="btn btn--ghost btn--sm" id="clearSearch" style="margin-top:14px">Clear search</button>' : ''}</p>`;
+      const pc = document.getElementById('productCount');
+      if(pc) pc.textContent = term ? '0 styles' : '';
+      const cs = document.getElementById('clearSearch');
+      if(cs) cs.addEventListener('click', ()=>{ document.getElementById('searchInput').value=''; renderShop(); });
+      return;
+    }
+    grid.innerHTML = list.map((p,i)=>{
+      const idx = products.indexOf(p);
+      const wished = isWished(p.id);
+      const stock = p.stock ?? 10;
+      const stockLabel = stock <= 3 ? `<span class="stock low">${stock} left</span>` : stock <= 6 ? `<span class="stock">${stock} left</span>` : '';
+      return `
+    <article class="card" data-id="${esc(p.id)}">
+      <div class="card__top mono">
+        <span>No. ${String(idx+1).padStart(2,'0')}</span>
+        <span style="display:flex;gap:10px;align-items:center">${stockLabel}${p.badge ? `<span class="badge">${esc(p.badge)}</span>` : ''}</span>
+      </div>
+      <div class="card__media">
+        <img src="${esc(imageFor(p, idx))}" data-fallback="${placeholder(p.title, idx)}" alt="${esc(p.title)}" loading="lazy">
+        <button class="wishlist-btn ${wished?'active':''}" data-wish="${esc(p.id)}" aria-label="${wished?'Remove from':'Save to'} wishlist" title="${wished?'Saved':'Save'}">
+          <svg viewBox="0 0 24 24" fill="${wished?'currentColor':'none'}" stroke="currentColor" stroke-width="1.6"><path d="M12 19l-2.3-2.1C6 13.2 3 10.6 3 7.7 3 4.9 5.2 2.8 8 2.8c1.6 0 3.1.8 4 2 0.9-1.2 2.4-2 4-2 2.8 0 5 2.1 5 4.9 0 2.9-3 5.5-6.7 9.2L12 19z"/></svg>
+        </button>
+        <button class="card__quick" data-quick="${esc(p.id)}"><span>Add to bag</span>${ICON.plus}</button>
+      </div>
+      <div class="card__body">
+        <div class="card__row">
+          <h3>${esc(p.title)}</h3>
+          <span class="price">${money(p.price)}</span>
+        </div>
+        <p class="card__cat mono">${esc(p.category || 'Denim')}</p>
+      </div>
+    </article>`;
+    }).join('');
+    document.querySelectorAll('#grid img').forEach(img=>{
+      img.addEventListener('error', ()=>{ if(img.dataset.fallback && img.src !== img.dataset.fallback) img.src = img.dataset.fallback; },{once:true});
+    });
+    const pc = document.getElementById('productCount');
+    if(pc) pc.textContent = `${list.length} ${list.length===1?'style':'styles'}${term?` for “${term}”`:''} available`;
+  };
+
+  // Hook search + sort events
+  function bindToolbar(){
+    const s = document.getElementById('searchInput');
+    const sel = document.getElementById('sortSelect');
+    if(s){
+      let t=null;
+      s.addEventListener('input', ()=>{ clearTimeout(t); t=setTimeout(()=>renderShop(), 180); });
+      s.addEventListener('keydown', e=>{ if(e.key==='Escape'){ s.value=''; renderShop(); }});
+    }
+    if(sel) sel.addEventListener('change', ()=>renderShop());
+    // wishlist toggle via delegation
+    document.addEventListener('click', e=>{
+      const w = e.target.closest('[data-wish]');
+      if(w){ e.stopPropagation(); toggleWish(w.dataset.wish); }
+    });
+  }
+
+  // Patch saveAdmin to also push to server when token present
+  const _origSaveAdmin = saveAdmin;
+  window.saveAdmin = async function(){
+    collectAdmin();
+    // try server sync
+    if(API.token){
+      try{
+        const r = await fetch('/api/products', { method:'PUT', headers: API.headers(), body: JSON.stringify(products) });
+        if(!r.ok){ const j=await r.json().catch(()=>({})); throw new Error(j.error||'Server save failed'); }
+        toast('Saved to server ✓', 'ok');
+      }catch(e){
+        console.warn('server save failed, falling back to local', e.message);
+        toast('Saved locally — server sync failed: '+e.message, 'err', 3800);
+      }
+    }
+    saveProducts();
+    renderFilters();
+    renderShop();
+    renderHero();
+    renderCart();
+    closeAll();
+  };
+
+  // Admin auth gate
+  const origOpenAdmin = openAdmin;
+  window.openAdmin = function(){
+    if(API.token){
+      origOpenAdmin();
+      loadOrdersIntoAdmin();
+      return;
+    }
+    // show login modal
+    document.getElementById('adminPass').value='';
+    document.getElementById('adminLoginErr').classList.add('hidden');
+    document.getElementById('adminLoginErr').textContent='';
+    openModal('#adminLoginModal');
+  };
+  async function loadOrdersIntoAdmin(){
+    try{
+      const r = await fetch('/api/orders', { headers: API.headers() });
+      if(!r.ok) return;
+      const orders = await r.json();
+      let wrap = document.getElementById('adminOrders');
+      if(!wrap){
+        const body = document.getElementById('adminBody');
+        wrap = document.createElement('div');
+        wrap.id='adminOrders';
+        wrap.className='orders-list';
+        body.parentNode.insertBefore(wrap, body.nextSibling);
+      }
+      if(!orders.length){
+        wrap.innerHTML = '<h4>Orders</h4><p class="mono" style="color:var(--muted)">No orders yet — demo orders appear here after checkout.</p>';
+      } else {
+        wrap.innerHTML = '<h4>Orders — ' + orders.length + '</h4>' + orders.slice(0,20).map(o=>`
+          <div class="order-card">
+            <div class="order-card__head"><span><b>${esc(o.id)}</b> · ${new Date(o.createdAt).toLocaleString()}</span><span>${esc(o.status||'')}</span></div>
+            <ul>${(o.items||[]).map(it=>`<li><span>${esc(it.title)} × ${it.qty}</span><span>${money(it.price*it.qty)}</span></li>`).join('')||'<li><span>No item detail</span></li>'}</ul>
+            <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:13px"><span class="mono" style="color:var(--muted)">${esc(o.customer?.email||'')}</span><b>${o.totals? money(o.totals.total):''}</b></div>
+          </div>`).join('');
+      }
+    }catch(e){ console.warn('load orders failed', e.message); }
+  }
+  document.getElementById('adminLoginBtn')?.addEventListener('click', async ()=>{
+    const pw = document.getElementById('adminPass').value.trim();
+    if(!pw) return;
+    const btn = document.getElementById('adminLoginBtn');
+    btn.disabled=true; btn.textContent='Checking…';
+    const errEl = document.getElementById('adminLoginErr');
+    try{
+      const j = await API.login(pw);
+      API.token = j.token;
+      sessionStorage.setItem('fs_admin_token', j.token);
+      closeAll();
+      toast('Admin unlocked ✓','ok');
+      origOpenAdmin();
+      loadOrdersIntoAdmin();
+    }catch(e){
+      errEl.textContent = e.message || 'Invalid password';
+      errEl.classList.remove('hidden');
+    } finally { btn.disabled=false; btn.textContent='Unlock editor'; }
+  });
+  document.getElementById('adminPass')?.addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('adminLoginBtn').click(); });
+
+  // Patch checkout to surface server errors nicely + wishlist/sync
+  const origHandleCheckout = handleCheckout;
+  window.handleCheckout = async function(e){
+    e.preventDefault();
+    const order = buildOrder();
+    if(!order) return;
+    const btn = document.getElementById('payBtn');
+    const origText = btn ? btn.textContent : '';
+    if(btn){ btn.disabled=true; btn.textContent='Processing…'; }
+    // remove old error
+    const oldErr = document.querySelector('.checkout__error');
+    if(oldErr) oldErr.remove();
+    try{
+      const result = await processPayment(order);
+      if(result && result.url){ window.location.href = result.url; return; }
+      showConfirmation(order, !!result.demo);
+      toast('Order placed ✓','ok');
+    }catch(err){
+      console.error(err);
+      const msg = (err && err.message) ? err.message : 'We could not start the payment.';
+      const form = document.getElementById('checkoutForm');
+      if(form){
+        const div = document.createElement('div');
+        div.className='checkout__error';
+        div.textContent = msg + ' — try again or use “Email your order”.';
+        form.prepend(div);
+      } else {
+        toast(msg, 'err', 4000);
+      }
+      if(btn){ btn.disabled=false; btn.textContent=origText; }
+    }
+  };
+
+  // Newsletter
+  document.getElementById('newsletterForm')?.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const email = (fd.get('email')||'').toString().trim();
+    const msgEl = document.getElementById('newsletterMsg');
+    const btn = e.target.querySelector('button');
+    if(btn) btn.disabled=true;
+    try{
+      const r = await fetch('/api/newsletter', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email }) });
+      const j = await r.json();
+      if(!r.ok) throw new Error(j.error||'Failed');
+      msgEl.textContent='✓ You’re on the list — watch your inbox.';
+      msgEl.className='newsletter__msg ok';
+      e.target.reset();
+      toast('Joined the list ✓','ok');
+    }catch(err){
+      msgEl.textContent = err.message || 'Could not join — try again';
+      msgEl.className='newsletter__msg';
+      msgEl.style.color='#ffb3a0';
+    } finally { if(btn) btn.disabled=false; }
+  });
+
+  // Success / canceled URL params → toast + clear cart if success
+  function handleUrlParams(){
+    const p = new URLSearchParams(location.search);
+    if(p.get('success')==='true'){
+      toast('Payment successful — thank you! You’ll get a confirmation email shortly.', 'ok', 5000);
+      cart=[]; saveCart(); renderCart();
+      // strip params
+      history.replaceState({},'',location.pathname+location.hash);
+    } else if(p.get('canceled')==='true'){
+      toast('Checkout canceled — your bag is still saved.', 'err', 4000);
+      history.replaceState({},'',location.pathname+location.hash);
+    }
+  }
+
+  // Wrap original init to add our bindings + sync
+  window.init = function(){
+    origInit();
+    bindToolbar();
+    updateWishlistCount();
+    handleUrlParams();
+    syncFromServer();
+    // hero visual click → open product
+    const hv = document.querySelector('.hero__visual');
+    if(hv) hv.addEventListener('click', ()=>{ if(products[0]) openProduct(products[0].id); });
+  };
+
+  // If DOM already loaded and original init already ran, run our extras
+  if(document.readyState !== 'loading' && document.getElementById('grid')?.children.length){
+    bindToolbar();
+    updateWishlistCount();
+    handleUrlParams();
+    syncFromServer();
+  }
+})();
+
+</script>
+</body>
+</html>

@@ -666,6 +666,83 @@ section{scroll-margin-top:calc(var(--header-h) + 20px)}
   *,*::before,*::after{animation-duration:.01ms !important;animation-delay:0s !important;transition-duration:.01ms !important}
   html{scroll-behavior:auto}
 }
+
+/* ===== ENHANCEMENTS — toolbar, search, toast, wishlist, admin login ===== */
+.shop-toolbar{
+  display:flex;gap:16px;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  margin-bottom:18px;padding:14px 0;border-bottom:1px solid var(--line-dark);
+}
+.search-wrap{
+  display:flex;align-items:center;gap:10px;
+  flex:1;min-width:220px;max-width:420px;
+  background:var(--surface);border:1px solid var(--line);
+  padding:10px 14px;
+}
+.search-wrap svg{width:14px;height:14px;color:var(--muted);flex:none}
+.search-wrap input{border:0;background:transparent;outline:none;width:100%;font-size:14px;color:var(--ink)}
+.search-wrap input::placeholder{color:#9d968a}
+.search-wrap:focus-within{border-color:var(--ink)}
+.sort-select{
+  padding:10px 12px;border:1px solid var(--line);background:var(--surface);
+  font-size:13px;font-weight:500;color:var(--ink);border-radius:2px;min-width:170px;
+}
+.sort-select:focus{outline:none;border-color:var(--ink)}
+.wishlist-btn{
+  position:absolute;top:10px;right:10px;z-index:2;
+  width:34px;height:34px;display:grid;place-items:center;
+  background:rgba(245,241,232,.92);border:1px solid var(--line);
+  color:var(--muted);transition:background .2s,color .2s,transform .2s;
+}
+.wishlist-btn:hover{background:var(--surface);color:var(--ink)}
+.wishlist-btn.active{color:var(--rust);background:var(--surface);border-color:var(--rust)}
+.wishlist-btn svg{width:16px;height:16px}
+.wishlist-btn.active svg{fill:var(--rust);stroke:var(--rust)}
+.stock{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--muted)}
+.stock.low{color:var(--rust)}
+.toast-stack{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  z-index:120;display:flex;flex-direction:column;gap:10px;pointer-events:none;
+  width:min(420px,calc(100% - 24px));
+}
+.toast{
+  background:var(--ink);color:var(--surface);
+  padding:14px 18px;font-size:13px;font-weight:500;
+  display:flex;align-items:center;gap:12px;
+  box-shadow:0 16px 40px rgba(26,32,51,.28);
+  border-left:3px solid var(--rust);
+  animation:toastIn .45s var(--ease) both;
+  pointer-events:auto;
+}
+.toast--ok{border-left-color:#5a7a5a}
+.toast--err{border-left-color:var(--rust)}
+.toast svg{width:16px;height:16px;flex:none}
+@keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.checkout__error{
+  background:#fdf0ec;border:1px solid #e8c4b8;color:#6b2a1a;
+  padding:12px 14px;font-size:13px;margin-bottom:16px;
+}
+.admin-login{padding:32px 30px 28px}
+.admin-login h3{margin:0 0 8px;font-family:var(--serif);font-weight:400;font-size:26px}
+.admin-login p{margin:0 0 18px;color:var(--muted);font-size:14px}
+.admin-login .field{margin-bottom:12px}
+.orders-list{margin-top:24px;border-top:1px solid var(--line-dark);padding-top:18px}
+.orders-list h4{font-family:var(--serif);font-weight:400;font-size:22px;margin:0 0 14px}
+.order-card{border:1px solid var(--line);background:var(--surface);padding:14px 16px;margin-bottom:12px}
+.order-card__head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.order-card__head b{color:var(--ink)}
+.order-card ul{margin:0;padding:0;list-style:none}
+.order-card li{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:13px}
+.order-card li:last-child{border:0}
+.newsletter{margin-top:0}
+.newsletter__row{display:flex;gap:0;max-width:420px}
+.newsletter__row input{flex:1;padding:12px 14px;border:1px solid rgba(245,241,232,.22);background:rgba(245,241,232,.08);color:var(--surface);font-size:14px}
+.newsletter__row input::placeholder{color:rgba(245,241,232,.45)}
+.newsletter__row button{padding:12px 18px;background:var(--surface);color:var(--ink);font-size:13px;font-weight:600;white-space:nowrap}
+.newsletter__row button:hover{background:var(--paper)}
+.newsletter__msg{font-size:12px;margin-top:10px;min-height:14px}
+.newsletter__msg.ok{color:#b8d0b8}
+.hero__visual{cursor:pointer}
+
 </style>
 </head>
 
@@ -773,6 +850,22 @@ section{scroll-margin-top:calc(var(--header-h) + 20px)}
       </div>
       <div class="filters" id="filters"></div>
     </div>
+        <div class="shop-toolbar">
+      <label class="search-wrap" aria-label="Search products">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M20 20L16.5 16.5"/></svg>
+        <input id="searchInput" type="search" placeholder="Search denim, cut, wash…" autocomplete="off">
+      </label>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <select class="sort-select" id="sortSelect" aria-label="Sort products">
+          <option value="default">Sort: Featured</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="name">Name: A — Z</option>
+          <option value="newest">Newest first</option>
+        </select>
+        <span class="mono" id="wishlistCount" style="font-size:11px;opacity:.0;pointer-events:none">0 saved</span>
+      </div>
+    </div>
     <div class="grid" id="grid"></div>
   </div>
 </section>
@@ -818,6 +911,14 @@ section{scroll-margin-top:calc(var(--header-h) + 20px)}
       <div>
         <h4>The shop</h4>
         <p>Designer denim, curated in limited runs. Sourced, checked and shipped with care.</p>
+        <form class="newsletter" id="newsletterForm" style="margin-top:18px">
+          <label class="mono" style="display:block;color:rgba(245,241,232,.5);margin-bottom:8px;font-size:11px">Join the list — early access to drops</label>
+          <div class="newsletter__row">
+            <input name="email" type="email" required placeholder="your@email.com" aria-label="Email">
+            <button type="submit">Join</button>
+          </div>
+          <div class="newsletter__msg" id="newsletterMsg"></div>
+        </form>
       </div>
       <div>
         <h4>Shop</h4>
@@ -828,9 +929,11 @@ section{scroll-margin-top:calc(var(--header-h) + 20px)}
       <div>
         <h4>Support</h4>
         <a href="mailto:orders@fssells.com" id="footEmail">orders@fssells.com</a>
+
         <a href="#contact">Shipping &amp; returns</a>
         <a href="#contact">Size guide</a>
       </div>
+
     </div>
     <div class="footer__bottom">
       <span>&copy; <span id="year"></span> FS.SELLS. All rights reserved.</span>
@@ -838,6 +941,8 @@ section{scroll-margin-top:calc(var(--header-h) + 20px)}
     </div>
   </div>
 </footer>
+
+<div class="toast-stack" id="toastStack" aria-live="polite"></div>
 
 <!-- ================= OVERLAY ================= -->
 <div class="overlay" id="overlay"></div>
@@ -911,6 +1016,26 @@ section{scroll-margin-top:calc(var(--header-h) + 20px)}
   </div>
 </div>
 
+
+<!-- ================= ADMIN LOGIN ================= -->
+<div class="modal" id="adminLoginModal">
+  <div class="modal__panel" style="width:min(420px,100%)">
+    <button class="modal__close" data-close-modal aria-label="Close">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3l10 10M13 3L3 13"/></svg>
+    </button>
+    <div class="admin-login">
+      <h3>Enter admin password</h3>
+      <p>Needed to edit products &amp; view orders. Default is <code>fs-sells-admin-2024</code> — change it in <code>.env</code>.</p>
+      <div class="field">
+        <label for="adminPass">Password</label>
+        <input id="adminPass" type="password" placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <div id="adminLoginErr" class="checkout__error hidden"></div>
+      <button class="btn btn--dark btn--full" id="adminLoginBtn">Unlock editor</button>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ============================================================
    SECTION 1 — STORE SETTINGS
@@ -942,7 +1067,7 @@ const CONFIG = {
        3. Paste its URL below, e.g. '/api/create-checkout-session'
        4. Paste your Stripe publishable key (pk_live_...)
      --------------------------------------------------------- */
-  checkoutEndpoint: '',                 // e.g. '/api/create-checkout-session'
+  checkoutEndpoint: '/api/create-checkout-session',
   stripePublishableKey: '',             // e.g. 'pk_live_xxxxxxxx'
 };
 
@@ -1043,6 +1168,61 @@ const DEFAULT_PRODUCTS = [
 /* ============================================================
    SECTION 3 — INTERNAL (no need to edit below)
    ============================================================ */
+
+
+/* ---------- API integration ---------- */
+const API = {
+  base: '',
+  token: sessionStorage.getItem('fs_admin_token') || '',
+  async getProducts(params = {}) {
+    const q = new URLSearchParams(params).toString();
+    const r = await fetch('/api/products' + (q ? '?' + q : ''));
+    if (!r.ok) throw new Error('Failed to load products');
+    return r.json();
+  },
+  async config() {
+    try { const r = await fetch('/api/config'); if (r.ok) return await r.json(); } catch(e){}
+    return null;
+  },
+  async login(pw) {
+    const r = await fetch('/api/admin/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pw })});
+    const j = await r.json();
+    if (!r.ok) throw new Error(j.error || 'Login failed');
+    return j;
+  },
+  headers() {
+    const h = { 'Content-Type':'application/json' };
+    if (this.token) h['X-Admin-Token'] = this.token;
+    return h;
+  }
+};
+
+/* ---------- Toast ---------- */
+function toast(msg, type='ok', ms=2800){
+  const stack = document.getElementById('toastStack');
+  if(!stack) return;
+  const el = document.createElement('div');
+  el.className = 'toast ' + (type==='err'?'toast--err':'toast--ok');
+  el.innerHTML = (type==='err' ? '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="6"/><path d="M8 5v4"/><circle cx="8" cy="11.2" r=".7" fill="currentColor" stroke="none"/></svg>' : '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3.5 8.5l3 3 6-7"/></svg>') + '<span>' + esc(msg) + '</span>';
+  stack.appendChild(el);
+  setTimeout(()=>{ el.style.opacity='0'; el.style.transform='translateY(6px)'; el.style.transition='all .35s'; setTimeout(()=>el.remove(),380); }, ms);
+}
+
+/* ---------- Wishlist (local) ---------- */
+const LS_WISH = 'fs_wishlist';
+let wishlist = (()=>{ try{ return JSON.parse(localStorage.getItem(LS_WISH)||'[]'); }catch(e){ return []; }})();
+function saveWish(){ try{ localStorage.setItem(LS_WISH, JSON.stringify(wishlist)); }catch(e){} updateWishlistCount(); }
+function toggleWish(id){
+  const i = wishlist.indexOf(id);
+  if(i>=0) wishlist.splice(i,1); else wishlist.push(id);
+  saveWish(); renderShop(); toast(i>=0 ? 'Removed from saved' : 'Saved — find it via search', 'ok');
+}
+function isWished(id){ return wishlist.includes(id); }
+function updateWishlistCount(){
+  const el = document.getElementById('wishlistCount');
+  if(!el) return;
+  if(wishlist.length){ el.textContent = wishlist.length + ' saved'; el.style.opacity='1'; } else { el.textContent=''; el.style.opacity='0'; }
+}
 
 /* ---------- Helpers ---------- */
 const $  = (sel, root = document) => root.querySelector(sel);
@@ -1863,6 +2043,292 @@ function init() {
 }
 
 document.addEventListener('DOMContentLoaded', init);
+
+/* ===== POST-INIT ENHANCEMENTS — search, sort, wishlist, API sync, admin auth, newsletter, success handling ===== */
+(function(){
+  const origInit = init;
+  let serverProducts = null;
+  let lastSearch = '';
+  let lastSort = 'default';
+
+  // Override products loading: try server first
+  async function syncFromServer(){
+    try{
+      const cfg = await API.config();
+      if(cfg){
+        CONFIG.currency = cfg.currency || CONFIG.currency;
+        CONFIG.currencyCode = cfg.currencyCode || CONFIG.currencyCode;
+        CONFIG.shippingFlat = cfg.shippingFlat ?? CONFIG.shippingFlat;
+        CONFIG.freeShippingOver = cfg.freeShippingOver ?? CONFIG.freeShippingOver;
+        CONFIG.storeName = cfg.storeName || CONFIG.storeName;
+        CONFIG.orderEmail = cfg.orderEmail || CONFIG.orderEmail;
+        const footEmail = document.getElementById('footEmail');
+        if(footEmail) { footEmail.textContent = cfg.orderEmail; footEmail.href = 'mailto:'+cfg.orderEmail; }
+      }
+      const data = await API.getProducts();
+      if(Array.isArray(data) && data.length){
+        serverProducts = data;
+        products = data;
+        // don't overwrite localStorage version — server is source of truth
+        saveProducts();
+        renderFilters();
+        renderShop();
+        renderHero();
+        renderCart();
+      }
+    }catch(e){
+      console.warn('API products not available, using local', e.message);
+    }
+  }
+
+  // Patched renderShop with search/sort/wishlist/stock
+  const _origRenderShop = renderShop;
+  window.renderShop = function(){
+    const term = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
+    const sort = document.getElementById('sortSelect')?.value || 'default';
+    let list = activeFilter === 'All' ? [...products] : products.filter(p => p.category === activeFilter);
+    if(term){
+      list = list.filter(p => (p.title+' '+(p.category||'')+' '+(p.description||'')+' '+(p.badge||'')).toLowerCase().includes(term));
+    }
+    if(sort === 'price-asc') list.sort((a,b)=>a.price-b.price);
+    if(sort === 'price-desc') list.sort((a,b)=>b.price-a.price);
+    if(sort === 'name') list.sort((a,b)=>a.title.localeCompare(b.title));
+    if(sort === 'newest') list.sort((a,b)=> (products.indexOf(b)-products.indexOf(a)) );
+    const grid = document.getElementById('grid');
+    if(!list.length){
+      const msg = term ? `No results for “${esc(term)}”.` : 'No products in this category yet.';
+      grid.innerHTML = `<p class="empty-note">${msg} ${wishlist.length ? '<br><button class="btn btn--ghost btn--sm" id="clearSearch" style="margin-top:14px">Clear search</button>' : ''}</p>`;
+      const pc = document.getElementById('productCount');
+      if(pc) pc.textContent = term ? '0 styles' : '';
+      const cs = document.getElementById('clearSearch');
+      if(cs) cs.addEventListener('click', ()=>{ document.getElementById('searchInput').value=''; renderShop(); });
+      return;
+    }
+    grid.innerHTML = list.map((p,i)=>{
+      const idx = products.indexOf(p);
+      const wished = isWished(p.id);
+      const stock = p.stock ?? 10;
+      const stockLabel = stock <= 3 ? `<span class="stock low">${stock} left</span>` : stock <= 6 ? `<span class="stock">${stock} left</span>` : '';
+      return `
+    <article class="card" data-id="${esc(p.id)}">
+      <div class="card__top mono">
+        <span>No. ${String(idx+1).padStart(2,'0')}</span>
+        <span style="display:flex;gap:10px;align-items:center">${stockLabel}${p.badge ? `<span class="badge">${esc(p.badge)}</span>` : ''}</span>
+      </div>
+      <div class="card__media">
+        <img src="${esc(imageFor(p, idx))}" data-fallback="${placeholder(p.title, idx)}" alt="${esc(p.title)}" loading="lazy">
+        <button class="wishlist-btn ${wished?'active':''}" data-wish="${esc(p.id)}" aria-label="${wished?'Remove from':'Save to'} wishlist" title="${wished?'Saved':'Save'}">
+          <svg viewBox="0 0 24 24" fill="${wished?'currentColor':'none'}" stroke="currentColor" stroke-width="1.6"><path d="M12 19l-2.3-2.1C6 13.2 3 10.6 3 7.7 3 4.9 5.2 2.8 8 2.8c1.6 0 3.1.8 4 2 0.9-1.2 2.4-2 4-2 2.8 0 5 2.1 5 4.9 0 2.9-3 5.5-6.7 9.2L12 19z"/></svg>
+        </button>
+        <button class="card__quick" data-quick="${esc(p.id)}"><span>Add to bag</span>${ICON.plus}</button>
+      </div>
+      <div class="card__body">
+        <div class="card__row">
+          <h3>${esc(p.title)}</h3>
+          <span class="price">${money(p.price)}</span>
+        </div>
+        <p class="card__cat mono">${esc(p.category || 'Denim')}</p>
+      </div>
+    </article>`;
+    }).join('');
+    document.querySelectorAll('#grid img').forEach(img=>{
+      img.addEventListener('error', ()=>{ if(img.dataset.fallback && img.src !== img.dataset.fallback) img.src = img.dataset.fallback; },{once:true});
+    });
+    const pc = document.getElementById('productCount');
+    if(pc) pc.textContent = `${list.length} ${list.length===1?'style':'styles'}${term?` for “${term}”`:''} available`;
+  };
+
+  // Hook search + sort events
+  function bindToolbar(){
+    const s = document.getElementById('searchInput');
+    const sel = document.getElementById('sortSelect');
+    if(s){
+      let t=null;
+      s.addEventListener('input', ()=>{ clearTimeout(t); t=setTimeout(()=>renderShop(), 180); });
+      s.addEventListener('keydown', e=>{ if(e.key==='Escape'){ s.value=''; renderShop(); }});
+    }
+    if(sel) sel.addEventListener('change', ()=>renderShop());
+    // wishlist toggle via delegation
+    document.addEventListener('click', e=>{
+      const w = e.target.closest('[data-wish]');
+      if(w){ e.stopPropagation(); toggleWish(w.dataset.wish); }
+    });
+  }
+
+  // Patch saveAdmin to also push to server when token present
+  const _origSaveAdmin = saveAdmin;
+  window.saveAdmin = async function(){
+    collectAdmin();
+    // try server sync
+    if(API.token){
+      try{
+        const r = await fetch('/api/products', { method:'PUT', headers: API.headers(), body: JSON.stringify(products) });
+        if(!r.ok){ const j=await r.json().catch(()=>({})); throw new Error(j.error||'Server save failed'); }
+        toast('Saved to server ✓', 'ok');
+      }catch(e){
+        console.warn('server save failed, falling back to local', e.message);
+        toast('Saved locally — server sync failed: '+e.message, 'err', 3800);
+      }
+    }
+    saveProducts();
+    renderFilters();
+    renderShop();
+    renderHero();
+    renderCart();
+    closeAll();
+  };
+
+  // Admin auth gate
+  const origOpenAdmin = openAdmin;
+  window.openAdmin = function(){
+    if(API.token){
+      origOpenAdmin();
+      loadOrdersIntoAdmin();
+      return;
+    }
+    // show login modal
+    document.getElementById('adminPass').value='';
+    document.getElementById('adminLoginErr').classList.add('hidden');
+    document.getElementById('adminLoginErr').textContent='';
+    openModal('#adminLoginModal');
+  };
+  async function loadOrdersIntoAdmin(){
+    try{
+      const r = await fetch('/api/orders', { headers: API.headers() });
+      if(!r.ok) return;
+      const orders = await r.json();
+      let wrap = document.getElementById('adminOrders');
+      if(!wrap){
+        const body = document.getElementById('adminBody');
+        wrap = document.createElement('div');
+        wrap.id='adminOrders';
+        wrap.className='orders-list';
+        body.parentNode.insertBefore(wrap, body.nextSibling);
+      }
+      if(!orders.length){
+        wrap.innerHTML = '<h4>Orders</h4><p class="mono" style="color:var(--muted)">No orders yet — demo orders appear here after checkout.</p>';
+      } else {
+        wrap.innerHTML = '<h4>Orders — ' + orders.length + '</h4>' + orders.slice(0,20).map(o=>`
+          <div class="order-card">
+            <div class="order-card__head"><span><b>${esc(o.id)}</b> · ${new Date(o.createdAt).toLocaleString()}</span><span>${esc(o.status||'')}</span></div>
+            <ul>${(o.items||[]).map(it=>`<li><span>${esc(it.title)} × ${it.qty}</span><span>${money(it.price*it.qty)}</span></li>`).join('')||'<li><span>No item detail</span></li>'}</ul>
+            <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:13px"><span class="mono" style="color:var(--muted)">${esc(o.customer?.email||'')}</span><b>${o.totals? money(o.totals.total):''}</b></div>
+          </div>`).join('');
+      }
+    }catch(e){ console.warn('load orders failed', e.message); }
+  }
+  document.getElementById('adminLoginBtn')?.addEventListener('click', async ()=>{
+    const pw = document.getElementById('adminPass').value.trim();
+    if(!pw) return;
+    const btn = document.getElementById('adminLoginBtn');
+    btn.disabled=true; btn.textContent='Checking…';
+    const errEl = document.getElementById('adminLoginErr');
+    try{
+      const j = await API.login(pw);
+      API.token = j.token;
+      sessionStorage.setItem('fs_admin_token', j.token);
+      closeAll();
+      toast('Admin unlocked ✓','ok');
+      origOpenAdmin();
+      loadOrdersIntoAdmin();
+    }catch(e){
+      errEl.textContent = e.message || 'Invalid password';
+      errEl.classList.remove('hidden');
+    } finally { btn.disabled=false; btn.textContent='Unlock editor'; }
+  });
+  document.getElementById('adminPass')?.addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('adminLoginBtn').click(); });
+
+  // Patch checkout to surface server errors nicely + wishlist/sync
+  const origHandleCheckout = handleCheckout;
+  window.handleCheckout = async function(e){
+    e.preventDefault();
+    const order = buildOrder();
+    if(!order) return;
+    const btn = document.getElementById('payBtn');
+    const origText = btn ? btn.textContent : '';
+    if(btn){ btn.disabled=true; btn.textContent='Processing…'; }
+    // remove old error
+    const oldErr = document.querySelector('.checkout__error');
+    if(oldErr) oldErr.remove();
+    try{
+      const result = await processPayment(order);
+      if(result && result.url){ window.location.href = result.url; return; }
+      showConfirmation(order, !!result.demo);
+      toast('Order placed ✓','ok');
+    }catch(err){
+      console.error(err);
+      const msg = (err && err.message) ? err.message : 'We could not start the payment.';
+      const form = document.getElementById('checkoutForm');
+      if(form){
+        const div = document.createElement('div');
+        div.className='checkout__error';
+        div.textContent = msg + ' — try again or use “Email your order”.';
+        form.prepend(div);
+      } else {
+        toast(msg, 'err', 4000);
+      }
+      if(btn){ btn.disabled=false; btn.textContent=origText; }
+    }
+  };
+
+  // Newsletter
+  document.getElementById('newsletterForm')?.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const email = (fd.get('email')||'').toString().trim();
+    const msgEl = document.getElementById('newsletterMsg');
+    const btn = e.target.querySelector('button');
+    if(btn) btn.disabled=true;
+    try{
+      const r = await fetch('/api/newsletter', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email }) });
+      const j = await r.json();
+      if(!r.ok) throw new Error(j.error||'Failed');
+      msgEl.textContent='✓ You’re on the list — watch your inbox.';
+      msgEl.className='newsletter__msg ok';
+      e.target.reset();
+      toast('Joined the list ✓','ok');
+    }catch(err){
+      msgEl.textContent = err.message || 'Could not join — try again';
+      msgEl.className='newsletter__msg';
+      msgEl.style.color='#ffb3a0';
+    } finally { if(btn) btn.disabled=false; }
+  });
+
+  // Success / canceled URL params → toast + clear cart if success
+  function handleUrlParams(){
+    const p = new URLSearchParams(location.search);
+    if(p.get('success')==='true'){
+      toast('Payment successful — thank you! You’ll get a confirmation email shortly.', 'ok', 5000);
+      cart=[]; saveCart(); renderCart();
+      // strip params
+      history.replaceState({},'',location.pathname+location.hash);
+    } else if(p.get('canceled')==='true'){
+      toast('Checkout canceled — your bag is still saved.', 'err', 4000);
+      history.replaceState({},'',location.pathname+location.hash);
+    }
+  }
+
+  // Wrap original init to add our bindings + sync
+  window.init = function(){
+    origInit();
+    bindToolbar();
+    updateWishlistCount();
+    handleUrlParams();
+    syncFromServer();
+    // hero visual click → open product
+    const hv = document.querySelector('.hero__visual');
+    if(hv) hv.addEventListener('click', ()=>{ if(products[0]) openProduct(products[0].id); });
+  };
+
+  // If DOM already loaded and original init already ran, run our extras
+  if(document.readyState !== 'loading' && document.getElementById('grid')?.children.length){
+    bindToolbar();
+    updateWishlistCount();
+    handleUrlParams();
+    syncFromServer();
+  }
+})();
+
 </script>
 </body>
 </html>

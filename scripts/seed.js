@@ -1,0 +1,101 @@
+#!/usr/bin/env node
+/** Re-seed data/products.json from server.js fallback or existing file */
+const fs = require('fs');
+const path = require('path');
+
+const PRODUCTS_FILE = path.join(__dirname, '..', 'data', 'products.json');
+
+const seed = [
+  {
+    "id": "p1",
+    "title": "Indigo Noir Slim",
+    "price": 189,
+    "category": "Slim",
+    "badge": "New",
+    "image": "",
+    "description": "Deep indigo with a clean slim taper. Mid-rise, comfort-stretch selvedge blend that holds its shape all day.",
+    "paymentLink": "",
+    "stock": 12
+  },
+  {
+    "id": "p2",
+    "title": "Vintage Wash Straight",
+    "price": 215,
+    "category": "Straight",
+    "badge": "",
+    "image": "",
+    "description": "A true straight leg in a faded vintage wash. Rigid 13oz denim that softens beautifully with wear.",
+    "paymentLink": "",
+    "stock": 8
+  },
+  {
+    "id": "p3",
+    "title": "Midnight Raw Selvedge",
+    "price": 265,
+    "category": "Selvedge",
+    "badge": "Limited",
+    "image": "",
+    "description": "Unwashed raw selvedge with a deep midnight cast. Cut narrow, built to fade to your shape.",
+    "paymentLink": "",
+    "stock": 5
+  },
+  {
+    "id": "p4",
+    "title": "Sandstone Wide Leg",
+    "price": 198,
+    "category": "Wide",
+    "badge": "",
+    "image": "",
+    "description": "Relaxed wide leg with a soft sandstone finish. High-rise, fluid drape, effortless from day to night.",
+    "paymentLink": "",
+    "stock": 10
+  },
+  {
+    "id": "p5",
+    "title": "Obsidian Skinny",
+    "price": 175,
+    "category": "Skinny",
+    "badge": "",
+    "image": "",
+    "description": "Jet-black skinny with four-way stretch. A sharp, pared-back staple that keeps its colour.",
+    "paymentLink": "",
+    "stock": 15
+  },
+  {
+    "id": "p6",
+    "title": "Stone Grey Relaxed",
+    "price": 205,
+    "category": "Relaxed",
+    "badge": "",
+    "image": "",
+    "description": "Washed stone grey in a relaxed fit. Roomy through the thigh with a clean, tapered ankle.",
+    "paymentLink": "",
+    "stock": 9
+  },
+  {
+    "id": "p7",
+    "title": "Archive Bootcut",
+    "price": 230,
+    "category": "Bootcut",
+    "badge": "Restocked",
+    "image": "",
+    "description": "A 90s archive bootcut, re-cut for now. Sits high, kicks out gently, stacks perfectly over boots.",
+    "paymentLink": "",
+    "stock": 6
+  },
+  {
+    "id": "p8",
+    "title": "Ecru Carpenter",
+    "price": 210,
+    "category": "Carpenter",
+    "badge": "",
+    "image": "",
+    "description": "Ecru carpenter jean with utility pockets and a hammer loop. Heavyweight cotton, zero stretch.",
+    "paymentLink": "",
+    "stock": 7
+  }
+];
+
+fs.mkdirSync(path.dirname(PRODUCTS_FILE), { recursive: true });
+fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(seed, null, 2), 'utf8');
+console.log(`Seeded ${seed.length} products → ${PRODUCTS_FILE}`);
